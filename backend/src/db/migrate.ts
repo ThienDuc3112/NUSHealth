@@ -10,11 +10,12 @@ const client = drizzle(pool);
 const main = async () => {
   console.log("Starting migration...");
   await migrate(client, { migrationsFolder: "drizzle" });
-  console.log("Migration ended");
-  process.exit(0);
 };
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .catch((err) => {
+    console.error(err);
+  })
+  .finally(() => {
+    console.log("Migration ended");
+  });

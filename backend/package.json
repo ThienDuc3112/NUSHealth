@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "migrate:generate": "drizzle-kit generate:pg --schema ./src/db/schema",
+    "migrate:push": "npx ts-node src/db/migrate",
+    "migrate": "npm run migrate:generate && npm run migrate:push"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +24,7 @@
     "@types/passport": "~1.0.16",
     "@types/passport-jwt": "~4.0.1",
     "@types/pg": "~8.11.6",
+    "drizzle-kit": "^0.20.18",
     "nodemon": "^3.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
