@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=nushealthdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    container_name: NUSHealthDB
+    volumes: 
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 6000:5432
+
+volumes:
+  db-data:
+    driver: local
