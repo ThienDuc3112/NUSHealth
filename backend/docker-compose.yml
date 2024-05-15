@@ -11,6 +11,26 @@ services:
     ports:
       - 6000:5432
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    environment:
+      - PORT=6969
+      - DB_HOST=host.docker.internal
+      - DB_PORT=6000
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=nushealthdb
+    volumes:
+      - .:/app
+    ports: 
+      - 6969:6969
+    depends_on:
+      - db
+    command: npm run dev
+    
+
 volumes:
   db-data:
     driver: local

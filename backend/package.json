@@ -4,8 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker-compose up -d && npm run migrate && nodemon src/index.ts",
+    "dev": "nodemon --legacy-watch src/index.ts",
     "build": "tsc",
     "migrate:generate": "drizzle-kit generate:pg --schema ./src/db/schema",
     "migrate:push": "npx ts-node src/db/migrate",

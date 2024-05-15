@@ -1,7 +1,5 @@
 import { Client } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { config } from "dotenv";
-config();
 
 const client = new Client({
   host: process.env.DB_HOST,
