@@ -1,8 +1,6 @@
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
-import { config } from "dotenv";
-config();
 
 const pool = new Pool({
   host: process.env.DB_HOST,

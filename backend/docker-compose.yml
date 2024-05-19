@@ -22,8 +22,10 @@ services:
       - DB_USER=user
       - DB_PASSWORD=password
       - DB_NAME=nushealthdb
+      - SECRET=cc72643812cc373b8c8baec3bdb0ada463c7b0367053ffff47b2e0f80681989f
     volumes:
       - .:/app
+      - /app/node_modules
     ports: 
       - 6969:6969
     depends_on:

@@ -2,6 +2,7 @@ console.log("Starting...");
 import express from "express";
 import cors from "cors";
 import { userRouter } from "./router/user";
+import { authRouter } from "./router/auth";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 const port = process.env.PORT ?? 6543;
 
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`Server open at port ${port}`);
