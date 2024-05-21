@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { loginProp, registerProp } from "../zodSchema/auth";
-import { db } from "../db/db";
-import { users } from "../db/schema/user";
+import { db } from "../../db/db";
+import { users } from "../model/user";
 import { eq, or } from "drizzle-orm";
 import { hash, compare } from "bcrypt";
 import { randomBytes } from "node:crypto";

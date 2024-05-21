@@ -11,7 +11,9 @@ app.use(cors());
 
 app.use((req, res, next) => {
   console.log("========== ", req.method, " ", req.url, " ==========\n");
-  console.log("req.body: ", JSON.stringify(req.body));
+  console.log("req.body:");
+  console.log(JSON.stringify(req.body, null, 2));
+
   console.log("\n==============================");
   next();
 });
