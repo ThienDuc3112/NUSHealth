@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { users } from "@/src/model/user";
+import { userTable } from "../model/userModel";
 
 export interface AuthRequest extends Request {
-  user?: typeof users.$inferSelect;
+  user?: typeof userTable.$inferSelect;
 }

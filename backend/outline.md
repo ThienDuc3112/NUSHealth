@@ -1,0 +1,36 @@
+# Features
+- Forum
+  - Posts
+  - Comments
+- Workout
+  - Exercises
+    - gif / images
+    - Meta datas
+      - Name
+      - Description
+      - etc...
+  - Routines
+    - exercises reps / sets
+    - Rest time
+    - kg?
+  - Hub
+    - Share plans / routines
+    - Description / titles
+- Users
+  - History
+    - Workouts
+    - Forum
+  - Statistics
+    - Measurements
+    - Workouts stats
+
+# Resources
+- Users
+- Exercises
+- Routines
+- Plans
+- Shared Plans
+- Posts
+- Comments
+- History
+- Stats

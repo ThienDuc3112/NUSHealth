@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --legacy-watch src/index.ts",
     "build": "tsc",
-    "migrate:generate": "drizzle-kit generate:pg --schema ./src/db/schema",
+    "migrate:generate": "drizzle-kit generate:pg --schema ./src/model",
     "migrate:push": "npx ts-node src/db/migrate",
     "migrate": "npm run migrate:generate && npm run migrate:push"
   },

@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { db } from "../../db/db";
-import { users } from "../model/user";
+import { userTable } from "../model/userModel";
 import { eq } from "drizzle-orm";
 import { AuthRequest } from "../types/auth";
 
@@ -18,7 +18,7 @@ export const authUser = async (
   try {
     const payload: any = verify(token, process.env.SECRET!);
     const user = (
-      await db.select().from(users).where(eq(users.id, payload.id))
+      await db.select().from(userTable).where(eq(userTable.id, payload.id))
     )[0];
     req.user = user;
   } catch (error) {
