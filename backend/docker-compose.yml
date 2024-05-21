@@ -26,11 +26,12 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - /app/drizzle
     ports: 
       - 6969:6969
     depends_on:
       - db
-    command: npm run dev
+    command: npm run start:container
     
 
 volumes:
