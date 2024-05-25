@@ -9,7 +9,7 @@ import {
   text,
   varchar,
 } from "drizzle-orm/pg-core";
-import { userTable } from "./userModel";
+import { userTable } from "../userModel";
 import { exerciseToRoutineTable } from "./exerciseToRoutineModel";
 
 export const bodyPartsEnum = pgEnum("body_parts", [
@@ -86,7 +86,9 @@ export const exerciseTable = pgTable("exercises", {
   target: musclesEnum("target").notNull(),
   instruction: text("instruction"),
   isDefaultExercise: boolean("id_default_exercise").notNull().default(false),
-  creatorId: integer("creator_id").references(() => userTable.id),
+  creatorId: integer("creator_id").references(() => userTable.id, {
+    onDelete: "set null",
+  }),
 });
 
 export const secondaryMuscleTable = pgTable(

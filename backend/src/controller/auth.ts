@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginProp, registerProp } from "../zodSchema/auth";
+import { loginProp, registerProp } from "../types/auth";
 import { db } from "../../db/db";
 import { userTable } from "../model/userModel";
 import { eq, or } from "drizzle-orm";
