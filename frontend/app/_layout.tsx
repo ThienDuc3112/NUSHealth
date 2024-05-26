@@ -1,7 +1,8 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
 
@@ -9,11 +10,6 @@ export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from "expo-router";
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
-};
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,17 +35,18 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <>
+      <StatusBar style="auto" />
+      <RootLayoutNav />
+    </>
+  );
 }
 
 function RootLayoutNav() {
   return (
-    <Tabs>
-      <Tabs.Screen options={{ title: "Workout" }} name="(workout)/index" />
-      <Tabs.Screen
-        options={{ title: "Account", headerShown: false }}
-        name="(account)"
-      />
-    </Tabs>
+    <Stack>
+      <Stack.Screen name="(home)" options={{ headerShown: false }} />
+    </Stack>
   );
 }
