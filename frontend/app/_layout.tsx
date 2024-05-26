@@ -1,11 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Tabs } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -48,5 +43,13 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  return <Stack />;
+  return (
+    <Tabs>
+      <Tabs.Screen options={{ title: "Workout" }} name="(workout)/index" />
+      <Tabs.Screen
+        options={{ title: "Account", headerShown: false }}
+        name="(account)"
+      />
+    </Tabs>
+  );
 }

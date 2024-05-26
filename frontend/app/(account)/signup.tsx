@@ -1,7 +1,8 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
-import * as Yup from "yup";
+import { registerType } from "@/types/signup";
 import { Formik, FormikHelpers } from "formik";
+import * as Yup from "yup";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().max(50).min(3).required(),
@@ -11,15 +12,7 @@ const registerSchema = Yup.object().shape({
   passwordVerify: Yup.string().min(8).max(40).required(),
 });
 
-type registerType = {
-  username: string;
-  displayname: string;
-  email: string;
-  password: string;
-  passwordVerify: string;
-};
-
-const Page = () => {
+const Signup = () => {
   const onSubmit = async (
     value: registerType,
     { setErrors, setSubmitting }: FormikHelpers<registerType>
@@ -107,7 +100,7 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Signup;
 
 const styles = StyleSheet.create({
   input: {
