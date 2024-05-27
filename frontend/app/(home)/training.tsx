@@ -1,14 +1,21 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Link } from "expo-router";
 
-const Training = () => {
+const Page = () => {
   return (
     <View>
-      <Text>Training</Text>
+      <Text>Page</Text>
+      <Link asChild href="/(account)/login">
+        <Text>Login</Text>
+      </Link>
+      <Link asChild href="/(training)/createNewExercise">
+        <Text>Create new exercise</Text>
+      </Link>
     </View>
   );
 };
 
-export default Training;
+export default Page;
 
 const styles = StyleSheet.create({});

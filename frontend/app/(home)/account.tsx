@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Page = () => {
-  return <Text>Index</Text>;
+const Account = () => {
+  return (
+    <View>
+      <Text>Account</Text>
+    </View>
+  );
 };
 
-export default Page;
+export default Account;
 
 const styles = StyleSheet.create({});

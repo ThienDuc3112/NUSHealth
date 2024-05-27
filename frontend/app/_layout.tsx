@@ -1,10 +1,14 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import migrations from "../drizzle/migrations";
+import { db } from "@/db/client";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -19,6 +23,14 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
+  const router = useRouter();
+
+  const { success, error: dbError } = useMigrations(db, migrations);
+
+  useEffect(() => {
+    if (dbError) console.error(dbError);
+    console.log(success);
+  }, [success, dbError]);
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -28,6 +40,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      // router.replace("/(home)/training");
     }
   }, [loaded]);
 
@@ -37,7 +50,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar />
       <RootLayoutNav />
     </>
   );
@@ -45,7 +58,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <Stack>
+    <Stack screenOptions={{ title: "" }}>
       <Stack.Screen name="(home)" options={{ headerShown: false }} />
     </Stack>
   );

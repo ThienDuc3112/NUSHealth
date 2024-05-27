@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const SharedPlan = () => {
+const Training = () => {
   return (
     <View>
-      <Text>SharedPlan</Text>
+      <Text>Forum</Text>
     </View>
   );
 };
 
-export default SharedPlan;
+export default Training;
 
 const styles = StyleSheet.create({});
