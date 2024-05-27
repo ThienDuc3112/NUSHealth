@@ -6,10 +6,10 @@ const Page = () => {
   return (
     <View>
       <Text>Page</Text>
-      <Link asChild href="/(account)/login">
+      <Link asChild href="/account/login">
         <Text>Login</Text>
       </Link>
-      <Link asChild href="/(training)/createNewExercise">
+      <Link asChild href="/training/createNewExercise">
         <Text>Create new exercise</Text>
       </Link>
     </View>

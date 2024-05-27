@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Layout = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs screenOptions={{ headerShown: false }} initialRouteName="training">
         <Tabs.Screen name="training" options={{ title: "Training" }} />
         <Tabs.Screen name="hub" options={{ title: "Hub" }} />
         <Tabs.Screen name="forum" options={{ title: "Forum" }} />
