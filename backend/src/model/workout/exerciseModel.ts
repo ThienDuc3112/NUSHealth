@@ -80,6 +80,7 @@ export const musclesEnum = pgEnum("targets", [
 
 export const exerciseTable = pgTable("exercises", {
   id: serial("id").primaryKey(),
+  initialId: integer("initial_id"),
   bodyPart: bodyPartsEnum("bodypart").notNull(),
   equipment: equipmentsEnum("equipment").default("body weight"),
   name: varchar("name").notNull(),

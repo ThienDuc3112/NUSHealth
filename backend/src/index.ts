@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { userRouter } from "./router/user";
 import { authRouter } from "./router/auth";
+import { imageRouter } from "./router/image";
 
 const app = express();
 
@@ -26,6 +27,7 @@ const port = process.env.PORT ?? 6543;
 
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/image", imageRouter);
 
 app.listen(port, () => {
   console.log(`Server open at port ${port}`);
