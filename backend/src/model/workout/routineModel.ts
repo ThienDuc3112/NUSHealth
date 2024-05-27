@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm";
 import { integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 import { exerciseToRoutineTable } from "./exerciseToRoutineModel";
-import { userTable } from "../userModel";
+import { userTable } from "../user/userModel";
 
 export const routineTable = pgTable("routines", {
   id: serial("id").primaryKey(),

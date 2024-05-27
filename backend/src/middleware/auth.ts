@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { verify } from "jsonwebtoken";
 import { db } from "../../db/db";
-import { userTable } from "../model/userModel";
+import { userTable } from "../model/user/userModel";
 import { eq } from "drizzle-orm";
 import { AuthRequest } from "../types/auth";
 

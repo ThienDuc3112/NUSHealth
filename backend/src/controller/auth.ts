@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { loginProp, registerProp } from "../types/auth";
 import { db } from "../../db/db";
-import { userTable } from "../model/userModel";
+import { userTable } from "../model/user/userModel";
 import { eq, or } from "drizzle-orm";
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";

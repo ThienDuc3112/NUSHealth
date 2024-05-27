@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { userTable } from "../model/userModel";
+import { userTable } from "../model/user/userModel";
 import { z } from "zod";
 
 export interface AuthRequest extends Request {

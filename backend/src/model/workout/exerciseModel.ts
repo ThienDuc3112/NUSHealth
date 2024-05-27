@@ -9,7 +9,7 @@ import {
   text,
   varchar,
 } from "drizzle-orm/pg-core";
-import { userTable } from "../userModel";
+import { userTable } from "../user/userModel";
 import { exerciseToRoutineTable } from "./exerciseToRoutineModel";
 
 export const bodyPartsEnum = pgEnum("body_parts", [

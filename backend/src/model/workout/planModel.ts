@@ -1,5 +1,5 @@
 import { integer, pgTable, serial, text, varchar } from "drizzle-orm/pg-core";
-import { userTable } from "../userModel";
+import { userTable } from "../user/userModel";
 import { relations } from "drizzle-orm";
 import { routineToPlanTable } from "./routineToPlanModel";
 
