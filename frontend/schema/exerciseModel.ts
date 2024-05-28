@@ -76,9 +76,9 @@ export const musclesEnum = [
 export const exerciseTable = sqliteTable("exercises", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   initialId: text("initial_id"),
+  name: text("name", { length: 255 }).notNull(),
   bodyPart: text("body_part", { enum: bodyPartsEnum }).notNull(),
   equipment: text("equipment", { enum: equipmentsEnum }).default("body weight"),
-  name: text("name", { length: 255 }).notNull(),
   target: text("target", { enum: musclesEnum }).notNull(),
   instruction: text("instruction"),
   isDefaultExercise: integer("id_default_exercise", { mode: "boolean" })
