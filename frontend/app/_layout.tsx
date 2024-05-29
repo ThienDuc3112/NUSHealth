@@ -10,6 +10,9 @@ import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import migrations from "../drizzle/migrations";
 import { db } from "@/db/client";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+const queryClient = new QueryClient()
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -48,7 +51,9 @@ export default function RootLayout() {
   return (
     <>
       <StatusBar />
-      <RootLayoutNav />
+      <QueryClientProvider client={queryClient} >
+        <RootLayoutNav />
+      </QueryClientProvider>
     </>
   );
 }

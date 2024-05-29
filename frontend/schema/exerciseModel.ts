@@ -92,7 +92,7 @@ export const secondaryMuscleTable = sqliteTable(
     exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
       onDelete: "cascade",
     }),
-    muscle: text("muscle", { enum: musclesEnum }),
+    muscle: text("muscle", { enum: musclesEnum }).notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.muscle] }),
@@ -105,7 +105,7 @@ export const exercisePhotoTable = sqliteTable(
     exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
       onDelete: "cascade",
     }),
-    url: text("url"),
+    url: text("url").notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.url] }),

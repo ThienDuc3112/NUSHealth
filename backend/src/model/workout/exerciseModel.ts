@@ -95,10 +95,12 @@ export const exerciseTable = pgTable("exercises", {
 export const secondaryMuscleTable = pgTable(
   "secondary_muscles",
   {
-    exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
-      onDelete: "cascade",
-    }),
-    muscle: musclesEnum("muscle"),
+    exercisesId: integer("exercise_id")
+      .references(() => exerciseTable.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    muscle: musclesEnum("muscle").notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.muscle] }),
@@ -108,10 +110,12 @@ export const secondaryMuscleTable = pgTable(
 export const exercisePhotoTable = pgTable(
   "exercise_photos",
   {
-    exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
-      onDelete: "cascade",
-    }),
-    url: varchar("url"),
+    exercisesId: integer("exercise_id")
+      .references(() => exerciseTable.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    url: varchar("url").notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.url] }),
