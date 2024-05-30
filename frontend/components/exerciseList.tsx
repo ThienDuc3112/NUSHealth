@@ -6,7 +6,7 @@ import { useFocusEffect } from "expo-router";
 
 const ExerciseList = () => {
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["exercies"],
+    queryKey: ["exercises"],
     queryFn: getLocalExercises,
     refetchOnMount: true,
   });

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
 import ExerciseList from "@/components/exerciseList";
@@ -13,9 +13,10 @@ const Page = () => {
       <Link asChild href="/training/createNewExercise">
         <Text>Create new exercise</Text>
       </Link>
-      <View>
-        <ExerciseList />
-      </View>
+      <Link asChild href="/training/createNewRoutine">
+        <Text>Create new routine</Text>
+      </Link>
+      <ExerciseList />
     </ScrollView>
   );
 };
