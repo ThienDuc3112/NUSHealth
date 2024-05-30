@@ -52,23 +52,23 @@ export const equipmentsEnum = [
 ] as const;
 
 export const musclesEnum = [
-  "abductors",
+  "abductors", // none
   "abs",
   "adductors",
   "biceps",
   "calves",
-  "cardiovascular system",
-  "delts",
-  "forearms",
-  "glutes",
-  "hamstrings",
-  "lats",
-  "levator scapulae",
-  "pectorals",
-  "quads",
-  "serratus anterior",
-  "spine",
-  "traps",
+  "cardiovascular system", // not a muscle
+  "delts", // deltoids
+  "forearms", // forearm
+  "glutes", // gluteal
+  "hamstrings", // hamstring
+  "lats", // lower back
+  "levator scapulae", // neck
+  "pectorals", // chest
+  "quads", // tibialis?
+  "serratus anterior", // none
+  "spine", // none
+  "traps", // trapezius
   "triceps",
   "upper back",
 ] as const;
