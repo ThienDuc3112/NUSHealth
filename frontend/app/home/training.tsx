@@ -1,6 +1,5 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
 import ExerciseList from "@/components/exerciseList";
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
@@ -22,7 +21,7 @@ const Page = () => {
         <View style={styles.contentElement}>
           <View style={styles.contentElementTitle}>
             <Text style={{ fontSize: 30 }}>103k</Text>
-            <Text>kg</Text>
+            <Text style={{color: "#808080"}}>kg</Text>
           </View>
           <View>
             <Text style={{ height: "auto" }}>tonnage{"\n"}lifted</Text>
@@ -32,7 +31,7 @@ const Page = () => {
         <View style={styles.contentElement}>
           <View style={styles.contentElementTitle}>
             <Text style={{ fontSize: 30 }}>70</Text>
-            <Text>kg</Text>
+            <Text style={{color: "#808080"}}>kg</Text>
           </View>
           <View>
             <Text>current{"\n"}weight</Text>
@@ -59,15 +58,7 @@ const Page = () => {
       </View>
 
 
-      <View style={{ height: "100%", padding: 10 }}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ color: "#808080" }}>My workouts</Text>
-          <Link href={"/training/createNewExercise"} asChild>
-            <Text style={{ color: "#4040FF" }}>Show all</Text>
-          </Link>
-        </View>
-        <ExerciseList />
-      </View>
+      <ExerciseList />
     </View>
   );
 };
@@ -78,10 +69,13 @@ const styles = StyleSheet.create({
   contentElement: {
     flex: 1,
     borderStyle: "solid",
-    borderWidth: 0.5,
-    borderColor: "#808080",
+    borderColor: "#C0C0C0",
     margin: 0,
-    padding: 10
+    padding: 15,
+    borderLeftWidth: 0,
+    borderRightWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1
   },
   contentElementTitle: {
     flexDirection: "row",
@@ -102,8 +96,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 20,
     margin: 0,
-    borderBottomColor: "#808080",
+    borderBottomColor: "#C0C0C0",
     borderStyle: "solid",
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
   }
 });

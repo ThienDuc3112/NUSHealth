@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getLocalExercises } from "@/helpers/getExercises";
-import { useFocusEffect } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 
 const ExerciseList = () => {
   const { data, error, isLoading, refetch } = useQuery({
@@ -10,19 +10,26 @@ const ExerciseList = () => {
     queryFn: getLocalExercises,
     refetchOnMount: true,
   });
-  useFocusEffect(() => {
-    refetch();
-  });
+  const memorized = useCallback(() => { refetch() }, [])
+  useFocusEffect(memorized);
   return (
-    <View style={styles.container}>
-      <Text>Exercise list</Text>
-      <Text>
-        {isLoading
-          ? "Loading..."
-          : data
-          ? JSON.stringify(data, null, 2)
-          : JSON.stringify(error, null, 2)}
-      </Text>
+    <View style={{ height: "100%", padding: 10 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <Text style={{ color: "#808080" }}>My workouts</Text>
+        <Link href={"/training/list"} asChild>
+          <Text style={{ color: "#4040FF" }}>Show all</Text>
+        </Link>
+      </View>
+      <View style={styles.container}>
+        <Text>Exercise list</Text>
+        <Text>
+          {isLoading
+            ? "Loading..."
+            : data
+              ? JSON.stringify(data, null, 2)
+              : JSON.stringify(error, null, 2)}
+        </Text>
+      </View>
     </View>
   );
 };
