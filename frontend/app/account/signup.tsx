@@ -16,19 +16,18 @@ const registerSchema = Yup.object().shape({
 
 const Signup = () => {
   const [generalError, setGeneralError] = useState(null as string | null)
+
   const onSubmit = async (
     value: registerType,
     { setErrors }: FormikHelpers<registerType>
   ) => {
     console.log(JSON.stringify(value));
     try {
-      console.log(API + "/auth/register")
       const res = await fetch(API + "/auth/register", {
         method: "POST", body: JSON.stringify(value), headers: {
           "Content-type": "application/json"
         }
       })
-      console.log("here")
       if (res.ok) {
         router.navigate("/account/login")
       } else {
@@ -47,6 +46,7 @@ const Signup = () => {
       setGeneralError("Generic error occured")
     }
   };
+
   return (
     <Formik
       validationSchema={registerSchema}
@@ -79,6 +79,7 @@ const Signup = () => {
           {touched.username && touched.username && (
             <Text>{errors.username}</Text>
           )}
+
           <TextInput
             style={styles.input}
             placeholder="Display name (optional)"
@@ -89,6 +90,7 @@ const Signup = () => {
           {touched.displayname && touched.displayname && (
             <Text>{errors.displayname}</Text>
           )}
+
           <TextInput
             style={styles.input}
             placeholder="Email"
@@ -97,32 +99,38 @@ const Signup = () => {
             value={values.email}
           />
           {touched.email && touched.email && <Text>{errors.email}</Text>}
+
           <TextInput
             style={styles.input}
             placeholder="Password"
             onChangeText={handleChange("password")}
             onBlur={handleBlur("password")}
             value={values.password}
+            textContentType="password"
           />
           {touched.password && touched.password && (
             <Text>{errors.password}</Text>
           )}
+
           <TextInput
             style={styles.input}
             placeholder="Retype password"
             onChangeText={handleChange("passwordVerify")}
             onBlur={handleBlur("passwordVerify")}
             value={values.passwordVerify}
+            textContentType="password"
           />
           {touched.passwordVerify && touched.passwordVerify && (
             <Text>{errors.passwordVerify}</Text>
           )}
+
+          {generalError && <Text>{generalError}</Text>}
+
           <Button
             title="register"
             onPress={() => handleSubmit()}
             disabled={isSubmitting}
           />
-          {generalError && <Text>{generalError}</Text>}
         </View>
       )}
     </Formik>

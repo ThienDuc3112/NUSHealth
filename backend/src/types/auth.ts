@@ -11,7 +11,7 @@ export const registerProp = z.object({
     .string()
     .max(50)
     .min(3)
-    .transform((val) => val.trim().toLowerCase()),
+    .transform((val) => val.trim().toLowerCase().replace(/ /g, "_")),
   displayname: z.string().max(50).min(3).optional(),
   email: z
     .string()
@@ -22,7 +22,7 @@ export const registerProp = z.object({
 });
 
 export const loginProp = z.object({
-  username: z.string().transform((val) => val.toLowerCase().trim()),
+  username: z.string().transform((val) => val.toLowerCase().trim().replace(/ /g, "_")),
   password: z.string(),
   remember: z.boolean().optional(),
 });

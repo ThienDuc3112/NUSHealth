@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const Layout = () => {
   return (
