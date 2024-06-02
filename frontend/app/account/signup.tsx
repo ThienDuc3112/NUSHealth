@@ -1,8 +1,10 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { registerType } from "@/types/signup";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import { API } from "@/constants/api";
+import { router } from "expo-router";
 
 const registerSchema = Yup.object().shape({
   username: Yup.string().max(50).min(3).required(),
@@ -13,11 +15,37 @@ const registerSchema = Yup.object().shape({
 });
 
 const Signup = () => {
+  const [generalError, setGeneralError] = useState(null as string | null)
   const onSubmit = async (
     value: registerType,
-    { setErrors, setSubmitting }: FormikHelpers<registerType>
+    { setErrors }: FormikHelpers<registerType>
   ) => {
-    console.log(value);
+    console.log(JSON.stringify(value));
+    try {
+      console.log(API + "/auth/register")
+      const res = await fetch(API + "/auth/register", {
+        method: "POST", body: JSON.stringify(value), headers: {
+          "Content-type": "application/json"
+        }
+      })
+      console.log("here")
+      if (res.ok) {
+        router.navigate("/account/login")
+      } else {
+        if (typeof res.json == "function") {
+          const data = await res.json()
+          console.log(data)
+          if (res.status == 400)
+            setErrors(data);
+          else
+            setGeneralError(data.message)
+        } else
+          setGeneralError("Generic error occured")
+      }
+    } catch (error) {
+      console.error(error)
+      setGeneralError("Generic error occured")
+    }
   };
   return (
     <Formik
@@ -94,6 +122,7 @@ const Signup = () => {
             onPress={() => handleSubmit()}
             disabled={isSubmitting}
           />
+          {generalError && <Text>{generalError}</Text>}
         </View>
       )}
     </Formik>
