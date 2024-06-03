@@ -1,11 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useFocusEffect } from 'expo-router'
+import { db } from '@/db/client'
+import { routineTable } from '@/schema/routineModel'
 
-const RoutineList = ({planId}: {planId: number}) => {
+const RoutineList = ({ planId }: { planId: number }) => {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["routineList"],
+    queryFn: async () => {
+      return await db.select().from(routineTable);
+    },
+  })
+
+  useFocusEffect(() => { refetch() })
+
   return (
-    <View>
+    <ScrollView style={{flex: 0}}>
       <Text>RoutineList</Text>
-    </View>
+      <Text>{data && JSON.stringify(data, null, 2)}</Text>
+    </ScrollView>
   )
 }
 

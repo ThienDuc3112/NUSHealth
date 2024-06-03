@@ -29,7 +29,7 @@ const List = () => {
   }
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <CustomModal open={openModal} onClose={() => {
         setNewRoutineName("")
         setError("")
