@@ -8,6 +8,6 @@ export const routineTable = sqliteTable("routines", {
   restTime: integer("rest_time"),
 });
 
-export const routineRelation = relations(routineTable, ({ one, many }) => ({
+export const routineRelation = relations(routineTable, ({ many }) => ({
   exercise: many(exerciseToRoutineTable),
 }));
