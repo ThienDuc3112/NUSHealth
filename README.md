@@ -5,6 +5,8 @@
 **Project Video:** [Watch Video](https://drive.google.com/file/d/1rRC9gu3iT5knVtWWoZz5FLYZA-36NN8L/view)  
 **Project Poster:** [View Poster](https://drive.google.com/file/d/19TQDifl0IWkaejjB1TYwG0mC95gvVkQ2/view)
 
+**Current (test) build:** [Install APK](https://drive.google.com/file/d/196eYWZmyp6_Mvx_jpT9InmL4Hse0bHvc/view?usp=sharing)
+
 ## Proposed Level of Achievement
 
 **APOLLO**
