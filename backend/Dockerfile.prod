@@ -2,13 +2,14 @@ FROM node:20-alpine3.19
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install 
+RUN npm install --production=false
 
 COPY . .
+RUN npm run migrate
 RUN npx tsc
 
 ENV NODE_ENV=production
-ENV DB_URL=postgres://him:CVux9u1IU2spkhHN9kIFo1YOG6fKVbpv@dpg-cpg8skn109ks73cag640-a/nushealth_prod
+ENV DB_URL=postgres://him:fdxPoB8RjQRaUEjWdZe3KylamAtZhv4E@dpg-cpg9ilol5elc738q8ks0-a/nushealth_prod_xzch
 ENV PORT=12345
 EXPOSE 12345
 
