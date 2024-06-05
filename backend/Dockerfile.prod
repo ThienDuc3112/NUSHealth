@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install 
 
 COPY . .
-RUN tsc
+RUN npx tsc
 
 ENV NODE_ENV=production
 ENV DB_URL=postgres://him:CVux9u1IU2spkhHN9kIFo1YOG6fKVbpv@dpg-cpg8skn109ks73cag640-a/nushealth_prod
