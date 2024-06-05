@@ -13,7 +13,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thienduc3112.nushealth"
     },
     "android": {
       "adaptiveIcon": {
@@ -33,6 +34,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9ddcd244-e13c-4cd3-b7d1-ea3ca418f21c"
+      }
     }
   }
 }
