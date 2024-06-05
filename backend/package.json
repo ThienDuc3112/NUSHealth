@@ -9,7 +9,8 @@
     "migrate:generate": "drizzle-kit generate:pg",
     "migrate:push": "npx ts-node db/migrate",
     "migrate": "npm run migrate:generate && npm run migrate:push",
-    "start:container": "npm run migrate && npm run dev"
+    "start:container": "npm run migrate && npm run dev",
+    "start": "node build/src/index.js"
   },
   "keywords": [],
   "author": "",
