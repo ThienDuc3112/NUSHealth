@@ -5,12 +5,13 @@ COPY package*.json ./
 RUN npm install --production=false
 
 COPY . .
-RUN npm run migrate
-RUN npx tsc
 
 ENV NODE_ENV=production
 ENV DB_URL=postgres://him:fdxPoB8RjQRaUEjWdZe3KylamAtZhv4E@dpg-cpg9ilol5elc738q8ks0-a/nushealth_prod_xzch
 ENV PORT=12345
 EXPOSE 12345
+
+RUN npm run migrate
+RUN npx tsc
 
 CMD ["npm", "run", "start"]
