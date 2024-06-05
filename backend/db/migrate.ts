@@ -2,7 +2,9 @@ import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
-const pool = new Pool({
+const pool = new Pool(process.env.NODE_ENV == "production" ? {
+  connectionString: process.env.DB_URL
+}:{
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT!),
   database: process.env.DB_NAME,
