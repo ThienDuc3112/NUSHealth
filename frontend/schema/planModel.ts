@@ -8,6 +8,6 @@ export const planTable = sqliteTable("plans", {
   description: text("description"),
 });
 
-export const planRelation = relations(planTable, ({ one, many }) => ({
+export const planRelation = relations(planTable, ({ many }) => ({
   routine: many(routineToPlanTable),
 }));

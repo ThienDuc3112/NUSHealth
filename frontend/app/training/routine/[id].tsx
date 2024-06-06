@@ -5,8 +5,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
 
 const RoutineInfo = () => {
-  const {id} = useLocalSearchParams()
-  const {data, isLoading, error} = useQuery({
+  const { id } = useLocalSearchParams()
+  const { data, isLoading, error } = useQuery({
     queryKey: ["routine", id],
     queryFn: async () => {
       const data = await getRoutineById(Number(id))
@@ -23,6 +23,12 @@ const RoutineInfo = () => {
     <View>
       <Text>RoutineInfo</Text>
       <Text>Routine id: {id}</Text>
+      <Text>Data: {
+        isLoading ?
+          "Loading..." : error ?
+            error.message : JSON.stringify(data, null, 2)
+      }
+      </Text>
       <Button title='Add exercise to routine' />
     </View>
   )
