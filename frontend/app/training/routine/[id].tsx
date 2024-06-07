@@ -10,13 +10,12 @@ const RoutineInfo = () => {
     queryKey: ["routine", id],
     queryFn: async () => {
       const data = await getRoutineById(Number(id))
-      console.log(data)
       return data
     },
     enabled: !!id
   })
   useEffect(() => {
-    console.log(isLoading, data)
+    console.log(id, isLoading, data)
   }, [id, data, isLoading])
 
   return (

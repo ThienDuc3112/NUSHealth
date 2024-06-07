@@ -7,14 +7,11 @@ import { eq } from "drizzle-orm"
 
 export const getRoutineById = async (routineId: number) => {
   try {
-    const res = await db
+    const routine = await db.select().from(routineTable).where(eq(routineTable.id, routineId))
+    const routinesExercises = await db
       .select()
       .from(exerciseToRoutineTable)
       .where(eq(exerciseToRoutineTable.routineId, routineId))
-      .innerJoin(
-        routineTable,
-        eq(exerciseToRoutineTable.routineId, routineTable.id)
-      )
       .innerJoin(
         exerciseTable,
         eq(exerciseToRoutineTable.exerciseId, exerciseTable.id)
@@ -27,8 +24,9 @@ export const getRoutineById = async (routineId: number) => {
         secondaryMuscleTable,
         eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
       );
+    console.log("Helper getRoutineById: ", routinesExercises)
     const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
-    res.forEach((exercise) => {
+    routinesExercises.forEach((exercise) => {
       const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine } = exercise;
       if (!exerciseDir[ex.id]) {
         exerciseDir[ex.id] = { ...ex, secondaryMuscles: [], photos: [], ...exercise_to_routine };
@@ -41,7 +39,8 @@ export const getRoutineById = async (routineId: number) => {
       }
     });
     return {
-      routine: res[0].routines
+      routine,
+      exercises: Object.values(exerciseDir)
     };
   } catch (error) {
     console.error(error)
