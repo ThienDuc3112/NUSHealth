@@ -34,3 +34,30 @@ export const getLocalExercises = async () => {
   });
   return Object.values(exerciseDir);
 };
+
+export const getExerciseById = async (id: number) => {
+  const res = await db
+    .select()
+    .from(exerciseTable)
+    .where(eq(exerciseTable.id, id))
+    .leftJoin(
+      exercisePhotoTable,
+      eq(exerciseTable.id, exercisePhotoTable.exercisesId)
+    )
+    .leftJoin(
+      secondaryMuscleTable,
+      eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
+    );
+  if (res.length == 0) return undefined;
+  const photos: string[] = []
+  const secondaryMuscles: string[] = []
+  res.forEach(e => {
+    if (e.exercise_photos) photos.push(e.exercise_photos.url)
+    if (e.secondary_muscles) secondaryMuscles.push(e.secondary_muscles.muscle)
+  })
+  return {
+    ...res[0].exercises,
+    secondaryMuscles,
+    photos
+  }
+}

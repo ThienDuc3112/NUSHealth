@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getLocalExercises } from "@/helpers/getExercises";
 import { Link, useFocusEffect } from "expo-router";
 
-const ExerciseList = () => {
+const HomeRoutineList = () => {
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["exercises"],
     queryFn: getLocalExercises,
@@ -34,7 +34,7 @@ const ExerciseList = () => {
   );
 };
 
-export default ExerciseList;
+export default HomeRoutineList;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },

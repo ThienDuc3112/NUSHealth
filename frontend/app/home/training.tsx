@@ -1,6 +1,6 @@
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import ExerciseList from "@/components/exerciseList";
+import HomeRoutineList from "@/components/homeRoutineList";
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 const Page = () => {
@@ -58,7 +58,7 @@ const Page = () => {
       </View>
 
 
-      <ExerciseList />
+      <HomeRoutineList />
     </View>
   );
 };

@@ -3,18 +3,19 @@ import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect } from 'expo-router'
+import LocalWorkoutECard from '@/components/localWorkoutsECard'
 
 const LocalWorkout = () => {
   const [exerciseName, setExerciseName] = useState("")
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["exercise"],
+    queryKey: ["exercises"],
     queryFn: getLocalExercises
   })
 
   useFocusEffect(() => { refetch() })
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Text>All local Workouts</Text>
       <TextInput
         value={exerciseName}
@@ -25,14 +26,14 @@ const LocalWorkout = () => {
       <Link href={"/training/exercise/new"} asChild>
         <Button title='Add new exercise' />
       </Link>
-      {isLoading ?
-        <Text>Loading...</Text> :
-        data ?
-          <ScrollView style={{flex: 1}}>
-            <Text>{JSON.stringify(data, null, 2)}</Text>
-          </ScrollView> :
-          <Text>{error?.message}</Text>
-      }
+      <ScrollView style={{ flex: 1 }}>
+        {isLoading ?
+          <Text>Loading...</Text> :
+          data ?
+            data.map(e => <LocalWorkoutECard key={e.id} e={e} />) :
+            <Text>{error?.message}</Text>
+        }
+      </ScrollView>
     </View>
   )
 }
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   textInput: {
     height: 50,
     backgroundColor: "white",
-    marginHorizontal: 10,
+    margin: 10,
     borderRadius: 10
   }
 })

@@ -1,33 +1,43 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
-import { useFocusEffect } from 'expo-router'
+import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
+import RoutineExerciseCard from '@/components/routineExerciseCard'
 
 const ExerciseList = () => {
   const [exerciseName, setExerciseName] = useState("")
+  const { id } = useLocalSearchParams()
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["exercise"],
+    queryKey: ["exercises"],
     queryFn: getLocalExercises
   })
 
   useFocusEffect(() => { refetch() })
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Text>Choose an exercise</Text>
+
       <TextInput
         value={exerciseName}
         onChangeText={(text) => setExerciseName(text)}
         placeholder='Name of exercise'
         style={styles.textInput}
       />
-      {isLoading ?
-        <Text>Loading...</Text> :
-        data ?
-          <Text>{JSON.stringify(data, null, 2)}</Text> :
-          <Text>{error?.message}</Text>
-      }
+
+      <Link href={"/training/exercise/new"} asChild>
+        <Button title='Add new exercise' />
+      </Link>
+
+      <ScrollView>
+        {isLoading ?
+          <Text>Loading...</Text> :
+          data ?
+            data.map(e => <RoutineExerciseCard key={e.id} e={e} id={id as any} />):
+            <Text>{error?.message}</Text>
+        }
+      </ScrollView>
     </View>
   )
 }
