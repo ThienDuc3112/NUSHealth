@@ -27,6 +27,11 @@ const Account = () => {
             <Text style={{ marginVertical: 10 }}>Signup</Text>
           </TouchableOpacity>
         </Link>
+        <Link href={"/account/localWorkouts"} asChild>
+          <TouchableOpacity style={{ backgroundColor: "cyan", borderRadius: 5, alignSelf: "center", alignItems: "center", justifyContent: "center", margin: 10, paddingHorizontal: 20 }}>
+            <Text style={{ marginVertical: 10 }}>Local Workouts</Text>
+          </TouchableOpacity>
+        </Link>
         <TouchableOpacity
           style={{
             backgroundColor: "cyan",

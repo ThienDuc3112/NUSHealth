@@ -23,13 +23,13 @@ const RoutineList = ({ planId }: { planId?: number }) => {
       {
         data &&
         <FlatList
-        style={{flex:0}}
+          style={{ flex: 0 }}
           data={data}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({item}) => <RoutineCard id={item.id} name={item.name} muscles={[]} />}
+          renderItem={({ item }) => <RoutineCard id={item.id} name={item.name} muscles={[]} />}
         />
       }
-      <Text>{data && JSON.stringify(data, null, 2)}</Text>
+      {/*<Text>{data && JSON.stringify(data, null, 2)}</Text>*/}
     </View>
   )
 }

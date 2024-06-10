@@ -1,6 +1,6 @@
 import { Button, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { useLocalSearchParams } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
 
@@ -28,7 +28,9 @@ const RoutineInfo = () => {
             error.message : JSON.stringify(data, null, 2)
       }
       </Text>
-      <Button title='Add exercise to routine' />
+      <Link href={`/training/routine/${id}/exerciseOption`} asChild>
+        <Button title='Add exercise to routine' />
+      </Link>
     </View>
   )
 }

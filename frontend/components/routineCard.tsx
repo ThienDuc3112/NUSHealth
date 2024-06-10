@@ -19,8 +19,9 @@ export default RoutineCard
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#C0C0C0",
-    height: 50,
+    height: 60,
     margin: 10,
-    borderRadius: 5
+    borderRadius: 5,
+    padding: 5
   }
 })
