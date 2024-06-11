@@ -22,6 +22,18 @@ The motivation behind creating the app stemmed from recognizing the common strug
 3. **Progress Tracker:** As someone who values progress and accountability, I want to track my workouts and monitor my fitness progress over time, so that I can set new goals, see my improvements, and stay motivated to continue pushing myself towards greater fitness achievements.
 4. **Fitness Coach:** As a fitness coach or personal trainer, I want to be able to create and share customized workout plans with my clients, so that I can provide them with tailored guidance and support to help them reach their fitness goals effectively.
 
+## How to Run the Development Build
+
+Although there is a build attached, it may not always be up to date. Follow these steps to run the app directly from this repository:
+
+1. Clone this repository.
+2. Open the command line in the folder of the cloned repository and change the directory to the frontend.
+3. Run npm install to install all dependencies.
+4. Run npx expo run.
+5. Once the development server is running, check if it's using Expo Go (the default). If it’s using a development build, switch back to Expo Go.
+6. A QR code should appear. On iOS, scan the QR code using the Camera app. On Android, install Expo Go from the Google Play Store and scan the QR code from the app.
+ 
+
 ## Features
 
 ### User Accounts: Basic Authentication Method with Sign Up / Sign In (Completed)
