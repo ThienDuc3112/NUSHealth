@@ -3,7 +3,8 @@
 **Team Name:** Health In Motion (HIM)  
 **App Name:** NUS Health (subject to change)  
 **Project Video:** [Watch Video](https://drive.google.com/file/d/1rRC9gu3iT5knVtWWoZz5FLYZA-36NN8L/view)  
-**Project Poster:** [View Poster](https://drive.google.com/file/d/19TQDifl0IWkaejjB1TYwG0mC95gvVkQ2/view)
+**Project Poster:** [View Poster](https://drive.google.com/file/d/19TQDifl0IWkaejjB1TYwG0mC95gvVkQ2/view)  
+**Full project README:** [View README](https://docs.google.com/document/d/1mO43v1y6ybi474F-Ofe_jgNJ77ZbTg2U4fDhyX6yxiQ/edit?usp=sharing)
 
 **Current (test) build:** [Install APK](https://drive.google.com/file/d/196eYWZmyp6_Mvx_jpT9InmL4Hse0bHvc/view?usp=sharing)
 
