@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Link, useFocusEffect } from "expo-router";
 import { deleteItemAsync, getItem } from "expo-secure-store"
 

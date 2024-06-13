@@ -1,1 +1,1 @@
-export const API = "http://192.168.30.104:6969"
+export const API = process.env.EXPO_PUBLIC_API_URL
