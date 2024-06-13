@@ -9,12 +9,12 @@ const Account = () => {
     const token = getItem("token")
     if (token != null) setToken(token)
   }, [])
-  useFocusEffect(fetchToken)
+  useFocusEffect(useCallback(fetchToken, []))
   return (
     <View>
       <Text>Account</Text>
       <View>
-        <Text>Token: {token.length == 0? "Nothing" : token} </Text>
+        <Text>Token: {token.length == 0 ? "Nothing" : token} </Text>
       </View>
       <View>
         <Link href={"/account/login"} asChild>

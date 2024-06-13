@@ -24,7 +24,7 @@ const SetRep = () => {
     enabled: !!exId
   })
 
-  useFocusEffect(() => { refetch() })
+  useFocusEffect(useCallback(() => { refetch() }, []))
 
   return (
     <ScrollView>

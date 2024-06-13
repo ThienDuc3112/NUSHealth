@@ -1,6 +1,6 @@
 import { routineTable } from "./routineModel";
 import { planTable } from "./planModel";
-import { integer, primaryKey, sqliteTable } from "drizzle-orm/sqlite-core";
+import { index, integer, primaryKey, sqliteTable } from "drizzle-orm/sqlite-core";
 
 export const routineToPlanTable = sqliteTable(
   "routine_to_plan",
@@ -14,5 +14,6 @@ export const routineToPlanTable = sqliteTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.planId, table.routineId] }),
+    planIndex: index("plan_index").on(table.planId)
   })
 );

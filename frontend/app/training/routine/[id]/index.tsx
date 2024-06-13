@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text } from 'react-native'
-import React  from 'react'
+import React, { useCallback } from 'react'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
@@ -12,7 +12,7 @@ const RoutineInfo = () => {
     enabled: !!id
   })
 
-  useFocusEffect(() => {refetch()})
+  useFocusEffect(useCallback(() => { refetch() }, []))
 
   return (
     <ScrollView>
@@ -21,7 +21,7 @@ const RoutineInfo = () => {
       <Text>Data: {
         isLoading ?
           "Loading..." : error ?
-            error.message : JSON.stringify(data, null, 2)
+            `${error.name} ${error.message}\nCause: ${error.cause}` : JSON.stringify(data, null, 2)
       }
       </Text>
       <Link href={`/training/routine/${id}/exerciseOption`} asChild>

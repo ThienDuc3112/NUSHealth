@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
@@ -13,7 +13,7 @@ const ExerciseList = () => {
     queryFn: getLocalExercises
   })
 
-  useFocusEffect(() => { refetch() })
+  useFocusEffect(useCallback(() => { refetch() }, []))
 
   return (
     <View style={{ flex: 1 }}>
@@ -34,7 +34,7 @@ const ExerciseList = () => {
         {isLoading ?
           <Text>Loading...</Text> :
           data ?
-            data.map(e => <RoutineExerciseCard key={e.id} e={e} id={id as any} />):
+            data.map(e => <RoutineExerciseCard key={e.id} e={e} id={id as any} />) :
             <Text>{error?.message}</Text>
         }
       </ScrollView>

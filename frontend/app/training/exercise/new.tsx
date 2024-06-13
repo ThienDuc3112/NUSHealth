@@ -16,7 +16,7 @@ import {
   musclesEnum,
   secondaryMuscleTable,
 } from "@/schema/exerciseModel";
-import { FieldArray, Formik } from "formik";
+import { FieldArray, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Picker } from "@react-native-picker/picker";
 
@@ -37,6 +37,39 @@ const CreateNewExercise = () => {
     });
   }, []);
 
+  const submitHandler = async (data: any, { resetForm }: FormikHelpers<any>) => {
+    try {
+      await db
+        .transaction(async (tx) => {
+          const [res] = await tx
+            .insert(exerciseTable)
+            .values({ ...data, secondaryMuscles: undefined } as any)
+            .returning();
+          console.log("insert exercse:");
+          console.log(JSON.stringify(res, null, 2));
+          if (
+            data.secondaryMuscles
+              .filter((value: any, index: number, self: any[]) => value != "" && index === self.indexOf(value))
+              .length > 0
+          ) {
+            const secondMusRes = await tx
+              .insert(secondaryMuscleTable)
+              .values(
+                data.secondaryMuscles
+                  .filter((value: any, index: number, self: any[]) => value != "" && index === self.indexOf(value))
+                  .map((muscle: string) => ({ exercisesId: res.id, muscle: muscle }))
+              )
+              .returning();
+            console.log("insert second muscle:");
+            console.log(JSON.stringify(secondMusRes, null, 2));
+          }
+          resetForm()
+        })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Formik
@@ -49,29 +82,7 @@ const CreateNewExercise = () => {
           instruction: "",
           secondaryMuscles: [],
         }}
-        onSubmit={async (data, { resetForm }) => {
-          await db
-            .transaction(async (tx) => {
-              const [res] = await tx
-                .insert(exerciseTable)
-                .values({ ...data, secondaryMuscles: undefined } as any)
-                .returning();
-              console.log("insert exercse:");
-              console.log(JSON.stringify(res, null, 2));
-              const secondMusRes = await tx
-                .insert(secondaryMuscleTable)
-                .values(
-                  data.secondaryMuscles
-                    .filter((value) => value != "")
-                    .map((muscle) => ({ exercisesId: res.id, muscle: muscle }))
-                )
-                .returning();
-              console.log("insert second muscle:");
-              console.log(JSON.stringify(secondMusRes, null, 2));
-            })
-            .then(() => resetForm())
-            .catch((err) => console.log(JSON.stringify(err, null, 2)));
-        }}
+        onSubmit={submitHandler}
       >
         {({
           errors,
@@ -83,6 +94,7 @@ const CreateNewExercise = () => {
           setFieldValue,
         }) => (
           <>
+
             <Text>Name: </Text>
             <TextInput
               style={styles.input}
@@ -91,7 +103,21 @@ const CreateNewExercise = () => {
               value={values.name}
             />
             {touched.name && errors.name && <Text>{errors.name}</Text>}
-            <Text>Body part: </Text>
+
+            <Text>Target muscle: </Text>
+            <Picker
+              onBlur={handleBlur("target")}
+              onValueChange={(value) => setFieldValue("target", value)}
+              selectedValue={values.target}
+            >
+              <Picker.Item label={"Select an option"} value={""} />
+              {musclesEnum.map((part) => (
+                <Picker.Item label={part} value={part} key={part} />
+              ))}
+            </Picker>
+            {touched.target && errors.target && <Text>{errors.target}</Text>}
+
+            <Text>General group of muscle targeted: </Text>
             <Picker
               onBlur={handleBlur("bodyPart")}
               onValueChange={(value) => setFieldValue("bodyPart", value)}
@@ -105,18 +131,7 @@ const CreateNewExercise = () => {
             {touched.bodyPart && errors.bodyPart && (
               <Text>{errors.bodyPart}</Text>
             )}
-            <Text>Target muscle: </Text>
-            <Picker
-              onBlur={handleBlur("target")}
-              onValueChange={(value) => setFieldValue("target", value)}
-              selectedValue={values.target}
-            >
-              <Picker.Item label={"Select an option"} value={""} />
-              {musclesEnum.map((part) => (
-                <Picker.Item label={part} value={part} key={part} />
-              ))}
-            </Picker>
-            {touched.target && errors.target && <Text>{errors.target}</Text>}
+
             <Text>Equipment: </Text>
             <Picker
               onBlur={handleBlur("equipment")}
@@ -131,6 +146,7 @@ const CreateNewExercise = () => {
             {touched.equipment && errors.equipment && (
               <Text>{errors.equipment}</Text>
             )}
+
             <Text>Instruction: </Text>
             <TextInput
               style={styles.input}
@@ -141,6 +157,7 @@ const CreateNewExercise = () => {
             {touched.instruction && errors.instruction && (
               <Text>{errors.instruction}</Text>
             )}
+
             <FieldArray name="secondaryMuscles">
               {({ push, remove }) => (
                 <View>
@@ -170,6 +187,7 @@ const CreateNewExercise = () => {
                 </View>
               )}
             </FieldArray>
+
             <Button onPress={() => handleSubmit()} title="Submit" />
           </>
         )}

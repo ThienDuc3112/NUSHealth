@@ -2,6 +2,7 @@ import { routineTable } from "./routineModel";
 import { exerciseTable } from "./exerciseModel";
 import { relations } from "drizzle-orm";
 import {
+  index,
   integer,
   real,
   sqliteTable,
@@ -21,7 +22,9 @@ export const exerciseToRoutineTable = sqliteTable(
     reps: integer("reps").notNull(),
     sets: integer("sets").notNull(),
     kg: real("kg"),
-  }
+  }, table => ({
+    routineIndex: index("routine_index").on(table.routineId)
+  })
 );
 
 export const exerciseToRoutineRelation = relations(

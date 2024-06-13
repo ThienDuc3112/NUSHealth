@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect } from 'expo-router'
@@ -12,7 +12,7 @@ const LocalWorkout = () => {
     queryFn: getLocalExercises
   })
 
-  useFocusEffect(() => { refetch() })
+  useFocusEffect(useCallback(() => { refetch() }, []))
 
   return (
     <View style={{ flex: 1 }}>
