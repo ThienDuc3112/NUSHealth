@@ -1,5 +1,5 @@
 import { Button, ScrollView, StyleSheet, Text } from 'react-native'
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
@@ -8,18 +8,11 @@ const RoutineInfo = () => {
   const { id } = useLocalSearchParams()
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["routine", id],
-    queryFn: async () => {
-      const data = await getRoutineById(Number(id))
-      return data
-    },
+    queryFn: async () => getRoutineById(Number(id)),
     enabled: !!id
   })
 
   useFocusEffect(() => {refetch()})
-
-  useEffect(() => {
-    console.log(id, isLoading, data)
-  }, [id, data, isLoading])
 
   return (
     <ScrollView>

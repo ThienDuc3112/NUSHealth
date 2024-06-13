@@ -23,7 +23,8 @@ export const getRoutineById = async (routineId: number) => {
       .leftJoin(
         secondaryMuscleTable,
         eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
-      );
+      )
+      .orderBy(exerciseToRoutineTable.order);
     console.log("Helper getRoutineById: ", JSON.stringify(routinesExercises, null, 2))
     const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
     routinesExercises.forEach((exercise) => {
@@ -44,6 +45,6 @@ export const getRoutineById = async (routineId: number) => {
     };
   } catch (error) {
     console.error(error)
-    return null
+    return error 
   }
 };
