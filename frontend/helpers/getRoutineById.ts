@@ -24,12 +24,12 @@ export const getRoutineById = async (routineId: number) => {
         secondaryMuscleTable,
         eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
       );
-    console.log("Helper getRoutineById: ", routinesExercises)
+    console.log("Helper getRoutineById: ", JSON.stringify(routinesExercises, null, 2))
     const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
     routinesExercises.forEach((exercise) => {
-      const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine } = exercise;
-      if (!exerciseDir[ex.id]) {
-        exerciseDir[ex.id] = { ...ex, secondaryMuscles: [], photos: [], ...exercise_to_routine };
+      const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine: e2r } = exercise;
+      if (!exerciseDir[e2r.id]) {
+        exerciseDir[e2r.id] = { ...ex, secondaryMuscles: [], photos: [], ...e2r };
       }
       if (exercise_photos) {
         exerciseDir[ex.id].photos.push(exercise_photos.url);

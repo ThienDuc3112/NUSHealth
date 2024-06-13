@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "52ea3042-58a0-45ac-8ea3-b81a19fd1e26",
+  "id": "3a2ef3f1-326d-433a-a713-e081e7923020",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "exercise_photos": {
@@ -18,7 +18,7 @@
           "name": "url",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -66,6 +66,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "name": {
+          "name": "name",
+          "type": "text(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "body_part": {
           "name": "body_part",
           "type": "text",
@@ -80,13 +87,6 @@
           "notNull": false,
           "autoincrement": false,
           "default": "'body weight'"
-        },
-        "name": {
-          "name": "name",
-          "type": "text(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
         },
         "target": {
           "name": "target",
@@ -130,7 +130,7 @@
           "name": "muscle",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
@@ -164,6 +164,13 @@
     "exercise_to_routine": {
       "name": "exercise_to_routine",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
         "routine_id": {
           "name": "routine_id",
           "type": "integer",
@@ -189,14 +196,14 @@
           "name": "reps",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "sets": {
           "name": "sets",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "kg": {
@@ -236,15 +243,7 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "exercise_to_routine_exercise_id_routine_id_pk": {
-          "columns": [
-            "exercise_id",
-            "routine_id"
-          ],
-          "name": "exercise_to_routine_exercise_id_routine_id_pk"
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "plans": {

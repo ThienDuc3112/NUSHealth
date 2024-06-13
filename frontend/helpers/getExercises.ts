@@ -7,7 +7,7 @@ import {
 import { exercise } from "@/types/exercises";
 import { eq } from "drizzle-orm";
 
-export const getLocalExercises = async () => {
+export const getLocalExercises = async () : Promise<exercise[]> => {
   const res = await db
     .select()
     .from(exerciseTable)
@@ -35,7 +35,7 @@ export const getLocalExercises = async () => {
   return Object.values(exerciseDir);
 };
 
-export const getExerciseById = async (id: number) => {
+export const getExerciseById = async (id: number): Promise<exercise | undefined> => {
   const res = await db
     .select()
     .from(exerciseTable)
@@ -57,7 +57,7 @@ export const getExerciseById = async (id: number) => {
   })
   return {
     ...res[0].exercises,
-    secondaryMuscles,
+    secondaryMuscles: secondaryMuscles as any,
     photos
   }
 }

@@ -1,4 +1,4 @@
-import { integer, pgTable, primaryKey, real } from "drizzle-orm/pg-core";
+import { bigserial, integer, pgTable, real } from "drizzle-orm/pg-core";
 import { routineTable } from "./routineModel";
 import { exerciseTable } from "./exerciseModel";
 import { relations } from "drizzle-orm";
@@ -6,6 +6,7 @@ import { relations } from "drizzle-orm";
 export const exerciseToRoutineTable = pgTable(
   "exercise_to_routine",
   {
+    id: bigserial("id", {mode: "bigint"}).primaryKey(),
     routineId: integer("routine_id")
       .references(() => routineTable.id, { onDelete: "cascade" })
       .notNull(),
@@ -16,11 +17,7 @@ export const exerciseToRoutineTable = pgTable(
     reps: integer("reps"),
     sets: integer("sets"),
     kg: real("kg"),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.exerciseId, table.routineId] }),
-  })
-);
+  });
 
 export const exerciseToRoutineRelation = relations(
   exerciseToRoutineTable,

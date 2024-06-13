@@ -7,7 +7,7 @@ import ExerciseCardBase from './exerciseCardBase'
 const LocalWorkoutECard = ({ e }: { e: exercise }) => {
   return (
     <Link href={`/account/localWorkouts/${e.id}`} asChild>
-      <TouchableWithoutFeedback onPress={() => console.log("Clicked")}>
+      <TouchableWithoutFeedback>
         <View>
           <ExerciseCardBase e={e} />
         </View>

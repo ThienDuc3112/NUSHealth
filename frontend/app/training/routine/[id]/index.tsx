@@ -1,12 +1,12 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, ScrollView, StyleSheet, Text } from 'react-native'
 import React, { useEffect } from 'react'
-import { Link, useLocalSearchParams } from 'expo-router'
+import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
 
 const RoutineInfo = () => {
   const { id } = useLocalSearchParams()
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["routine", id],
     queryFn: async () => {
       const data = await getRoutineById(Number(id))
@@ -14,12 +14,15 @@ const RoutineInfo = () => {
     },
     enabled: !!id
   })
+
+  useFocusEffect(() => {refetch()})
+
   useEffect(() => {
     console.log(id, isLoading, data)
   }, [id, data, isLoading])
 
   return (
-    <View>
+    <ScrollView>
       <Text>RoutineInfo</Text>
       <Text>Routine id: {id}</Text>
       <Text>Data: {
@@ -31,7 +34,7 @@ const RoutineInfo = () => {
       <Link href={`/training/routine/${id}/exerciseOption`} asChild>
         <Button title='Add exercise to routine' />
       </Link>
-    </View>
+    </ScrollView>
   )
 }
 

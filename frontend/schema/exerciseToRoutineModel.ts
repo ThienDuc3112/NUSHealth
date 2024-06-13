@@ -3,7 +3,6 @@ import { exerciseTable } from "./exerciseModel";
 import { relations } from "drizzle-orm";
 import {
   integer,
-  primaryKey,
   real,
   sqliteTable,
 } from "drizzle-orm/sqlite-core";
@@ -11,6 +10,7 @@ import {
 export const exerciseToRoutineTable = sqliteTable(
   "exercise_to_routine",
   {
+    id: integer("id").primaryKey({autoIncrement: true}),
     routineId: integer("routine_id")
       .references(() => routineTable.id, { onDelete: "cascade" })
       .notNull(),
@@ -18,13 +18,10 @@ export const exerciseToRoutineTable = sqliteTable(
       .references(() => exerciseTable.id, { onDelete: "cascade" })
       .notNull(),
     order: integer("order").notNull(),
-    reps: integer("reps"),
-    sets: integer("sets"),
+    reps: integer("reps").notNull(),
+    sets: integer("sets").notNull(),
     kg: real("kg"),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.exerciseId, table.routineId] }),
-  })
+  }
 );
 
 export const exerciseToRoutineRelation = relations(

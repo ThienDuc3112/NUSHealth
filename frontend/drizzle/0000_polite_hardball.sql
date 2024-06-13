@@ -1,6 +1,6 @@
 CREATE TABLE `exercise_photos` (
 	`exercise_id` integer,
-	`url` text,
+	`url` text NOT NULL,
 	PRIMARY KEY(`exercise_id`, `url`),
 	FOREIGN KEY (`exercise_id`) REFERENCES `exercises`(`id`) ON UPDATE no action ON DELETE cascade
 );
@@ -8,9 +8,9 @@ CREATE TABLE `exercise_photos` (
 CREATE TABLE `exercises` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`initial_id` text,
+	`name` text(255) NOT NULL,
 	`body_part` text NOT NULL,
 	`equipment` text DEFAULT 'body weight',
-	`name` text(255) NOT NULL,
 	`target` text NOT NULL,
 	`instruction` text,
 	`id_default_exercise` integer DEFAULT false NOT NULL
@@ -18,19 +18,19 @@ CREATE TABLE `exercises` (
 --> statement-breakpoint
 CREATE TABLE `secondary_muscles` (
 	`exercise_id` integer,
-	`muscle` text,
+	`muscle` text NOT NULL,
 	PRIMARY KEY(`exercise_id`, `muscle`),
 	FOREIGN KEY (`exercise_id`) REFERENCES `exercises`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `exercise_to_routine` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`routine_id` integer NOT NULL,
 	`exercise_id` integer NOT NULL,
 	`order` integer NOT NULL,
-	`reps` integer,
-	`sets` integer,
+	`reps` integer NOT NULL,
+	`sets` integer NOT NULL,
 	`kg` real,
-	PRIMARY KEY(`exercise_id`, `routine_id`),
 	FOREIGN KEY (`routine_id`) REFERENCES `routines`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`exercise_id`) REFERENCES `exercises`(`id`) ON UPDATE no action ON DELETE cascade
 );
