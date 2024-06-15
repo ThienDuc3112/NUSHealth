@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { View, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
 
-export const CustomModal = ({ open, onClose, children }: { open: boolean, onClose: () => void, children: ReactNode }) => {
+export const ModalBase = ({ open, onClose, children }: { open: boolean, onClose: () => void, children: ReactNode }) => {
   return <Modal visible={open} transparent={true} onRequestClose={onClose}>
     <TouchableWithoutFeedback onPress={onClose} >
       <View style={styles.centeredView}>

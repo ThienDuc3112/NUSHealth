@@ -25,20 +25,23 @@ export const getRoutineById = async (routineId: number): Promise<routine> => {
       eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
     )
     .orderBy(exerciseToRoutineTable.order);
-  console.log("Helper getRoutineById: ", JSON.stringify(routinesExercises, null, 2))
   const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
+  console.log("Helper getRoutineById routinesExercises.length: ", routinesExercises.length )
   routinesExercises.forEach((exercise) => {
     const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine: e2r } = exercise;
+    console.log("Helper getRoutineById exercise: ", JSON.stringify(exercise, null, 2))
     if (!exerciseDir[e2r.id]) {
       exerciseDir[e2r.id] = { ...ex, secondaryMuscles: [], photos: [], ...e2r };
     }
     if (exercise_photos) {
-      exerciseDir[ex.id].photos.push(exercise_photos.url);
+      exerciseDir[e2r.id].photos.push(exercise_photos.url);
     }
     if (secondary_muscles) {
-      exerciseDir[ex.id].secondaryMuscles.push(secondary_muscles.muscle);
+      exerciseDir[e2r.id].secondaryMuscles.push(secondary_muscles.muscle);
     }
+    console.log("Helper getRoutineById read secondary_muscles succeed")
   });
+  console.log("Helper getRoutineById succeed")
   return {
     routine: routine[0],
     exercises: Object.values(exerciseDir)
