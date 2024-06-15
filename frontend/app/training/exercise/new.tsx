@@ -27,17 +27,19 @@ const validationSchema = Yup.object().shape({
   equipment: Yup.string().oneOf(equipmentsEnum).required(),
   instruction: Yup.string(),
   secondaryMuscles: Yup.array().of(Yup.string().oneOf(musclesEnum)),
+  generic: Yup.string()
 });
 
 const CreateNewExercise = () => {
   const navigation = useNavigation();
+
   useEffect(() => {
     navigation.setOptions({
       title: "Create new exercise",
     });
   }, []);
 
-  const submitHandler = async (data: any, { resetForm }: FormikHelpers<any>) => {
+  const submitHandler = async (data: any, { resetForm, setFieldError }: FormikHelpers<any>) => {
     try {
       await db
         .transaction(async (tx) => {
@@ -47,17 +49,15 @@ const CreateNewExercise = () => {
             .returning();
           console.log("insert exercse:");
           console.log(JSON.stringify(res, null, 2));
-          if (
+          const secondaryMuscles: any[] =
             data.secondaryMuscles
-              .filter((value: any, index: number, self: any[]) => value != "" && index === self.indexOf(value))
-              .length > 0
-          ) {
+              .filter((value: any, index: number, self: any[]) =>
+                value != "" && index === self.indexOf(value))
+          if (secondaryMuscles.length > 0) {
             const secondMusRes = await tx
               .insert(secondaryMuscleTable)
               .values(
-                data.secondaryMuscles
-                  .filter((value: any, index: number, self: any[]) => value != "" && index === self.indexOf(value))
-                  .map((muscle: string) => ({ exercisesId: res.id, muscle: muscle }))
+                secondaryMuscles.map((muscle) => ({ exercisesId: res.id, muscle: muscle }))
               )
               .returning();
             console.log("insert second muscle:");
@@ -67,6 +67,7 @@ const CreateNewExercise = () => {
         })
     } catch (error) {
       console.error(error)
+      setFieldError("generic", `Generic error happened!\nThis shouldn't happened, contact the developer for help, or try change some field values\n${(error as any)?.message}\n${JSON.stringify(error, null, 2)}`)
     }
   }
 
@@ -81,6 +82,7 @@ const CreateNewExercise = () => {
           equipment: "",
           instruction: "",
           secondaryMuscles: [],
+          generic: ""
         }}
         onSubmit={submitHandler}
       >
@@ -143,6 +145,7 @@ const CreateNewExercise = () => {
                 <Picker.Item label={part} value={part} key={part} />
               ))}
             </Picker>
+
             {touched.equipment && errors.equipment && (
               <Text>{errors.equipment}</Text>
             )}
@@ -187,6 +190,8 @@ const CreateNewExercise = () => {
                 </View>
               )}
             </FieldArray>
+
+            {errors.generic && <Text>{errors.generic}</Text>}
 
             <Button onPress={() => handleSubmit()} title="Submit" />
           </>

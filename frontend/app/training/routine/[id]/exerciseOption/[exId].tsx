@@ -1,6 +1,6 @@
 import { Button, ScrollView, StyleSheet, Text, TextInput } from 'react-native'
 import React, { useCallback, useState } from 'react'
-import { useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getExerciseById } from '@/helpers/getExercises'
 import ExerciseView from '@/components/exerciseView'
@@ -47,13 +47,17 @@ const SetRep = () => {
         validationSchema={routineExerciseSchema}
         onSubmit={async (data) => {
           console.log(data)
-          setSuccess(await addExerciseToRoutine(
+          const succeed = await addExerciseToRoutine(
             Number(exId),
             Number(id),
             Number(data.sets),
             Number(data.reps),
             Number(data.kg)
-          ))
+          )
+          setSuccess(succeed)
+          if (succeed) {
+            router.navigate(`/training/routine/${id}`)
+          }
         }}
       >
         {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) =>
@@ -88,12 +92,10 @@ const SetRep = () => {
             keyboardType='numeric'
           />
           {touched.kg && errors.kg && <Text>{errors.kg}</Text>}
-          {success !== undefined && success ? <Text>Added</Text> : <Text>Failed to add</Text>}
+          {success === undefined ? null : success ? <Text>Added</Text> : <Text>Failed to add</Text>}
           <Button title='Submit' onPress={() => handleSubmit()} />
         </>)}
-
       </Formik>
-
     </ScrollView>
   )
 }
