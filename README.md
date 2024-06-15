@@ -6,7 +6,7 @@
 **Project Poster:** [View Poster](https://drive.google.com/file/d/19TQDifl0IWkaejjB1TYwG0mC95gvVkQ2/view)  
 **Full project README:** [View README](https://docs.google.com/document/d/1mO43v1y6ybi474F-Ofe_jgNJ77ZbTg2U4fDhyX6yxiQ/edit?usp=sharing)
 
-**Current (test) build:** [Install APK](https://drive.google.com/file/d/196eYWZmyp6_Mvx_jpT9InmL4Hse0bHvc/view?usp=sharing)
+**15/06/2024 build:** [Install APK](https://drive.google.com/file/d/1upMwfWt865FASP52ipgAeo64ZbYpfZ_X/view?usp=drive_link)
 
 ## Proposed Level of Achievement
 
