@@ -1,9 +1,10 @@
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
-import { ModalBase } from './modalBase'
+import { ModalBase } from '@/components/modal/modalBase'
 import * as Yup from "yup"
 import { db } from '@/db/client'
 import { planTable } from '@/schema/planModel'
+import { GlobalStyles } from '@/constants/styles'
 
 const AddPlanModal = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
   const [newPlanName, setNewPlanName] = useState("")
@@ -15,8 +16,6 @@ const AddPlanModal = ({ open, onClose }: { open: boolean, onClose: () => void })
     try {
       await db.insert(planTable).values({ name: name }).returning()
       setNewPlanName("")
-      // setOpen(false)
-      // refetch()
       onClose()
     } catch (err) {
       console.error(err)
@@ -27,7 +26,7 @@ const AddPlanModal = ({ open, onClose }: { open: boolean, onClose: () => void })
 
   return (
     <ModalBase open={open} onClose={onClose}>
-      <View style={styles.modalView}>
+      <View style={GlobalStyles.modalView}>
         <Text>New plan name</Text>
 
         <TextInput style={{
@@ -53,20 +52,4 @@ const AddPlanModal = ({ open, onClose }: { open: boolean, onClose: () => void })
 
 export default AddPlanModal
 
-const styles = StyleSheet.create({
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-})
+const styles = StyleSheet.create({})

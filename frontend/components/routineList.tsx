@@ -1,21 +1,23 @@
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useFocusEffect } from 'expo-router'
-import RoutineCard from './routineCard'
+import { Link, useFocusEffect } from 'expo-router'
+import RoutineCard from '@/components/routineCard'
 import { getRoutineByPlanId } from '@/helpers/getRoutineByPlan'
-import AddRoutineModal from './modal/addRoutineModal'
+import AddRoutineModal from '@/components/modal/addRoutineModal'
+import CreateRoutineModal from '@/components/modal/createRoutineModal'
 
 const RoutineList = ({ planId }: { planId?: number }) => {
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["routineList", planId],
+    queryKey: ["plan", planId],
     queryFn: ({ queryKey }) => {
       const [_, planId] = queryKey;
       return getRoutineByPlanId(Number(planId));
     },
   })
 
-  const [openModal, setOpenModal] = useState(false)
+  const [openNewRoutineModal, setOpenNewRoutineModal] = useState(false)
+  const [openAddRoutineModal, setOpenAddRoutineModal] = useState(false)
 
   useFocusEffect(useCallback(() => { refetch() }, [planId]))
 
@@ -31,19 +33,33 @@ const RoutineList = ({ planId }: { planId?: number }) => {
               style={{ flex: 0 }}
               data={data}
               keyExtractor={(item) => item.routine.id.toString()}
-              renderItem={({ item }) => <RoutineCard
-                id={item.routine.id}
-                name={item.routine.name}
-                muscles={item.targets}
-              />}
+              renderItem={({ item }) =>
+                <Link href={`/training/routine/${item.routine.id}`} asChild>
+                  <TouchableOpacity>
+                    <RoutineCard
+                      id={item.routine.id}
+                      name={item.routine.name}
+                      muscles={item.targets}
+                    />
+                  </TouchableOpacity>
+                </Link>
+              }
             />
       }
 
-      {!isNaN(Number(planId)) && <Button title='Add existing routine to this plan' />}
+      {!isNaN(Number(planId)) && <Button title='Add existing routine to this plan' onPress={() => setOpenAddRoutineModal(true)} />}
 
-      <Button title='Create new routine' onPress={() => setOpenModal(true)} />
+      <Button title='Create new routine' onPress={() => setOpenNewRoutineModal(true)} />
 
-      <AddRoutineModal open={openModal} onClose={() => setOpenModal(false)} planId={planId} />
+      <CreateRoutineModal open={openNewRoutineModal} onClose={() => setOpenNewRoutineModal(false)} planId={planId} />
+      <AddRoutineModal
+        open={openAddRoutineModal}
+        onClose={() => {
+          setOpenAddRoutineModal(false)
+          refetch()
+        }}
+        planId={planId!}
+      />
     </View>
   )
 }

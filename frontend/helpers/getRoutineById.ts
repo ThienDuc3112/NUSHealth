@@ -7,6 +7,7 @@ import { routine } from "@/types/routine"
 import { eq } from "drizzle-orm"
 
 export const getRoutineById = async (routineId: number): Promise<routine> => {
+  console.log("===== Helper getRoutineById called =====")
   const routine = await db.select().from(routineTable).where(eq(routineTable.id, routineId))
   const routinesExercises = await db
     .select()
@@ -26,10 +27,8 @@ export const getRoutineById = async (routineId: number): Promise<routine> => {
     )
     .orderBy(exerciseToRoutineTable.order);
   const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
-  console.log("Helper getRoutineById routinesExercises.length: ", routinesExercises.length )
   routinesExercises.forEach((exercise) => {
     const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine: e2r } = exercise;
-    console.log("Helper getRoutineById exercise: ", JSON.stringify(exercise, null, 2))
     if (!exerciseDir[e2r.id]) {
       exerciseDir[e2r.id] = { ...ex, secondaryMuscles: [], photos: [], ...e2r };
     }
@@ -39,9 +38,7 @@ export const getRoutineById = async (routineId: number): Promise<routine> => {
     if (secondary_muscles) {
       exerciseDir[e2r.id].secondaryMuscles.push(secondary_muscles.muscle);
     }
-    console.log("Helper getRoutineById read secondary_muscles succeed")
   });
-  console.log("Helper getRoutineById succeed")
   return {
     routine: routine[0],
     exercises: Object.values(exerciseDir)

@@ -7,6 +7,7 @@ import { routine } from "@/types/routine";
 import { eq, getTableColumns } from "drizzle-orm";
 
 export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: routine["routine"], targets: (typeof musclesEnum[number])[], exercisesCount: number })[]> => {
+  console.log(`===== Helper getRoutineByPlanId called =====`)
   if (!planId && planId != 0) {
     const routines = await db
       .select({
@@ -28,9 +29,7 @@ export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: r
         if (!temp[r.routine.id].targets.some(target => target == r.target)) temp[r.routine.id].targets.push(r.target)
       }
     })
-    const res = Object.values(temp);
-    console.log(`Helper getRoutineByPlanId ${JSON.stringify(res, null, 2)}`)
-    return res
+    return Object.values(temp);
   } else {
     const routines = await db
       .select({
@@ -54,8 +53,6 @@ export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: r
         if (!temp[r.routine.id].targets.some(target => target == r.target)) temp[r.routine.id].targets.push(r.target)
       }
     })
-    const res = Object.values(temp);
-    console.log(`Helper getRoutineByPlanId ${JSON.stringify(res, null, 2)}`)
-    return res
+    return Object.values(temp);
   }
 }

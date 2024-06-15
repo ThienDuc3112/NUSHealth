@@ -1,4 +1,4 @@
-import { Button, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import React, { useState } from 'react'
 import RoutineList from '@/components/routineList'
 import PlansDropdown from '@/components/plansDropdown'

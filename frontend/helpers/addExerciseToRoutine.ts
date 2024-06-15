@@ -9,13 +9,13 @@ export const addExerciseToRoutine = async (
   reps: number,
   kg: number | undefined
 ): Promise<boolean> => {
+  console.log("===== Helper addExerciseToRoutine called =====")
   try {
     const getOrder = await db
       .select({ value: count() })
       .from(exerciseToRoutineTable)
       .where(eq(exerciseToRoutineTable.routineId, routineId))
     const order = getOrder[0].value
-    console.log(order)
     await db.insert(exerciseToRoutineTable).values({
       exerciseId: exId,
       routineId, sets, reps, kg, order

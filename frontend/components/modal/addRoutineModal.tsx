@@ -1,85 +1,77 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
-import { ModalBase } from './modalBase'
-import { router } from 'expo-router'
-import { routineTable } from '@/schema/routineModel'
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ModalBase } from '@/components/modal/modalBase'
+import { useQuery } from '@tanstack/react-query'
+import { getRoutineByPlanId } from '@/helpers/getRoutineByPlan'
+import RoutineCard from '@/components/routineCard'
+import { GlobalStyles } from '@/constants/styles'
 import { db } from '@/db/client'
-import * as Yup from "yup"
 import { routineToPlanTable } from '@/schema/routineToPlanModel'
 
-const AddRoutineModal = ({ open, onClose, planId }: { open: boolean, onClose: () => void, planId?: number }) => {
-  const [newRoutineName, setNewRoutineName] = useState("")
-  const [nameError, setNameError] = useState("")
+const AddRoutineModal = ({ open, onClose, planId }: { open: boolean, onClose: () => void, planId: number }) => {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryKey: ["plan", undefined],
+    queryFn: () => getRoutineByPlanId(),
+    enabled: !!planId
+  })
 
-  const createNewRoutine = async (name: string) => {
-    const valid = Yup.string().max(30).min(1).isValidSync(name)
-    if (!valid) return setNameError("The name is required and less than 30 characters")
+  const [errMsg, setErrMsg] = useState("")
+
+  useEffect(() => {
+    if (planId === undefined)
+      onClose()
+    if (open) refetch()
+  }, [planId, open])
+
+  const addRoutine = useCallback(async (routineId: number) => {
     try {
-      const res = (await db.insert(routineTable).values({ name: name }).returning())[0]
-      setNewRoutineName("")
-      if (planId) {
-        try {
-          await db.insert(routineToPlanTable).values({ planId: planId, routineId: res.id })
-          onClose()
-          router.navigate(`/training/routine/${res.id}`)
-        } catch (error) {
-          setNameError("Successfully added routine, but failed to add routine to plan")
-        }
-      } else {
-        onClose()
-        router.navigate(`/training/routine/${res.id}`)
-      }
-    } catch (err) {
-      console.error(err)
-      setNameError("Cannot create " + name)
-      return;
+      await db.insert(routineToPlanTable).values({
+        planId, routineId
+      })
+      setErrMsg("")
+      onClose()
+    } catch (error) {
+      console.error(error)
+      setErrMsg("Cannot add routine to plan, check if this routine already in the plan")
     }
-  }
+  }, [planId])
 
-  return <ModalBase open={open} onClose={() => {
-    setNewRoutineName("")
-    setNameError("")
-    onClose()
-  }}>
-    <View style={styles.modalView}>
-      <Text>New routine name</Text>
-
-      <TextInput style={{
-        width: 200,
-        height: 30,
-        marginBottom: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: "black"
-      }}
-        onChangeText={text => {
-          setNameError("")
-          setNewRoutineName(text.slice(0, 30))
-        }}
-        value={newRoutineName}
-      />
-      {nameError.length != 0 && <Text>{nameError}</Text>}
-
-      <Button title='Create' onPress={() => createNewRoutine(newRoutineName)} />
-    </View>
-  </ModalBase>
+  return (
+    <ModalBase open={open} onClose={onClose}>
+      <View style={[GlobalStyles.modalView, styles.modalView]}>
+        <TextInput placeholder='Search for a routine' />
+        {
+          isLoading ?
+            <Text>Loading...</Text> :
+            error ?
+              <Text>{`${error.name} ${error.message}\nCause: ${error.cause}`}</Text> :
+              <>
+                <FlatList
+                  style={{ flex: 1 }}
+                  data={data}
+                  keyExtractor={(item) => item.routine.id.toString()}
+                  renderItem={({ item }) =>
+                    <TouchableOpacity onPress={() => { addRoutine(item.routine.id) }}>
+                      <RoutineCard
+                        id={item.routine.id}
+                        name={item.routine.name}
+                        muscles={item.targets}
+                      />
+                    </TouchableOpacity>
+                  }
+                />
+                {errMsg.length > 0 && <Text>{errMsg}</Text>}
+              </>
+        }
+      </View>
+    </ModalBase>
+  )
 }
 
 export default AddRoutineModal
 
 const styles = StyleSheet.create({
   modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
+    maxHeight: "70%"
+  }
 })

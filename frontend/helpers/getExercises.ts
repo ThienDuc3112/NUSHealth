@@ -8,6 +8,7 @@ import { exercise } from "@/types/exercises";
 import { eq } from "drizzle-orm";
 
 export const getLocalExercises = async () : Promise<exercise[]> => {
+  console.log("===== Helper getLocalExercises called =====")
   const res = await db
     .select()
     .from(exerciseTable)
