@@ -19,6 +19,7 @@ import {
 import { FieldArray, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { Picker } from "@react-native-picker/picker";
+import TextInputWithSuggestion from "@/components/textInputWithSuggestion";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().max(255),
@@ -72,7 +73,7 @@ const CreateNewExercise = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Formik
         validationSchema={validationSchema}
         initialValues={{
@@ -104,50 +105,84 @@ const CreateNewExercise = () => {
               onChangeText={handleChange("name")}
               value={values.name}
             />
-            {touched.name && errors.name && <Text>{errors.name}</Text>}
+            {touched.name && errors.name && <Text
+              style={styles.errorText}
+            >{errors.name}</Text>}
 
             <Text>Target muscle: </Text>
-            <Picker
+            {
+              // <Picker
+              //   onBlur={handleBlur("target")}
+              //   onValueChange={(value) => setFieldValue("target", value)}
+              //   selectedValue={values.target}
+              // >
+              //   <Picker.Item label={"Select an option"} value={""} />
+              //   {musclesEnum.map((part) => (
+              //     <Picker.Item label={part} value={part} key={part} />
+              //   ))}
+              // </Picker>
+              //
+              // <Text>Test</Text>
+            }
+            <TextInputWithSuggestion
+              value={values.target}
+              onChangeText={handleChange("target")}
+              suggestions={[...musclesEnum]}
               onBlur={handleBlur("target")}
-              onValueChange={(value) => setFieldValue("target", value)}
-              selectedValue={values.target}
-            >
-              <Picker.Item label={"Select an option"} value={""} />
-              {musclesEnum.map((part) => (
-                <Picker.Item label={part} value={part} key={part} />
-              ))}
-            </Picker>
-            {touched.target && errors.target && <Text>{errors.target}</Text>}
+            />
+            {touched.target && errors.target && <Text
+              style={styles.errorText}
+            >{errors.target}</Text>}
+
 
             <Text>General group of muscle targeted: </Text>
-            <Picker
+            {
+              // <Picker
+              //   onBlur={handleBlur("bodyPart")}
+              //   onValueChange={(value) => setFieldValue("bodyPart", value)}
+              //   selectedValue={values.bodyPart}
+              // >
+              //   <Picker.Item label={"Select an option"} value={""} />
+              //   {bodyPartsEnum.map((part) => (
+              //     <Picker.Item label={part} value={part} key={part} />
+              //   ))}
+              // </Picker>
+            }
+            <TextInputWithSuggestion
+              value={values.bodyPart}
+              onChangeText={handleChange("bodyPart")}
+              suggestions={[...bodyPartsEnum]}
               onBlur={handleBlur("bodyPart")}
-              onValueChange={(value) => setFieldValue("bodyPart", value)}
-              selectedValue={values.bodyPart}
-            >
-              <Picker.Item label={"Select an option"} value={""} />
-              {bodyPartsEnum.map((part) => (
-                <Picker.Item label={part} value={part} key={part} />
-              ))}
-            </Picker>
+            />
             {touched.bodyPart && errors.bodyPart && (
-              <Text>{errors.bodyPart}</Text>
+              <Text
+                style={styles.errorText}
+              >{errors.bodyPart}</Text>
             )}
 
             <Text>Equipment: </Text>
-            <Picker
+            {
+              // <Picker
+              //   onBlur={handleBlur("equipment")}
+              //   onValueChange={(value) => setFieldValue("equipment", value)}
+              //   selectedValue={values.equipment}
+              // >
+              //   <Picker.Item label={"Select an option"} value={""} />
+              //   {equipmentsEnum.map((part) => (
+              //     <Picker.Item label={part} value={part} key={part} />
+              //   ))}
+              // </Picker>
+            }
+            <TextInputWithSuggestion
+              value={values.equipment}
+              onChangeText={handleChange("equipment")}
+              suggestions={[...equipmentsEnum]}
               onBlur={handleBlur("equipment")}
-              onValueChange={(value) => setFieldValue("equipment", value)}
-              selectedValue={values.equipment}
-            >
-              <Picker.Item label={"Select an option"} value={""} />
-              {equipmentsEnum.map((part) => (
-                <Picker.Item label={part} value={part} key={part} />
-              ))}
-            </Picker>
-
+            />
             {touched.equipment && errors.equipment && (
-              <Text>{errors.equipment}</Text>
+              <Text
+                style={styles.errorText}
+              >{errors.equipment}</Text>
             )}
 
             <Text>Instruction: </Text>
@@ -158,7 +193,9 @@ const CreateNewExercise = () => {
               value={values.instruction}
             />
             {touched.instruction && errors.instruction && (
-              <Text>{errors.instruction}</Text>
+              <Text
+                style={styles.errorText}
+              >{errors.instruction}</Text>
             )}
 
             <FieldArray name="secondaryMuscles">
@@ -167,18 +204,31 @@ const CreateNewExercise = () => {
                   <Text>Secondary target muscles</Text>
                   {values.secondaryMuscles.map((muscle, index) => (
                     <View key={index}>
-                      <Picker
-                        onValueChange={(value) =>
-                          setFieldValue(`secondaryMuscles[${index}]`, value)
-                        }
-                        selectedValue={muscle}
+
+                      {
+                        // <Picker
+                        //   onValueChange={(value) =>
+                        //     setFieldValue(`secondaryMuscles[${index}]`, value)
+                        //   }
+                        //   selectedValue={muscle}
+                        //   onBlur={handleBlur(`secondaryMuscles[${index}]`)}
+                        // >
+                        //   <Picker.Item label={"Select an option"} value={""} />
+                        //   {musclesEnum.map((part) => (
+                        //     <Picker.Item label={part} value={part} key={part} />
+                        //   ))}
+                        // </Picker>
+                      }
+
+                      <TextInputWithSuggestion
                         onBlur={handleBlur(`secondaryMuscles[${index}]`)}
-                      >
-                        <Picker.Item label={"Select an option"} value={""} />
-                        {musclesEnum.map((part) => (
-                          <Picker.Item label={part} value={part} key={part} />
-                        ))}
-                      </Picker>
+                        onChangeText={(text) => {
+                          setFieldValue(`secondaryMuscles[${index}]`, text)
+                        }}
+                        value={muscle}
+                        suggestions={[...musclesEnum]}
+                      />
+
                       <Button
                         onPress={() => remove(index)}
                         title="Delete"
@@ -197,7 +247,7 @@ const CreateNewExercise = () => {
           </>
         )}
       </Formik>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -212,4 +262,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingLeft: 8,
   },
+  errorText: {
+    color: "red"
+  }
 });
