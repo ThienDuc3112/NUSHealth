@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
+import SetCard from '@/components/setCard'
 
 const Workout = () => {
   const { id } = useLocalSearchParams()
@@ -40,12 +41,7 @@ const Workout = () => {
       <ScrollView style={{ flex: 1 }}>
         {
           Array(data?.exercises[ex].sets).fill(0, 0, data?.exercises[ex].sets).map((_, idx) =>
-          (<View key={idx} style={{ flexDirection: "row" }}>
-            <Text>{idx}</Text>
-            <Text>{data?.exercises[ex].reps} Reps</Text>
-            <Text>{data?.exercises[ex].kg ?? "+"} Kg</Text>
-            <Text>Finished</Text>
-          </View>))
+            (<SetCard order={idx + 1} reps={data!.exercises[ex].reps} kg={data?.exercises[ex].kg ?? undefined} finished={false} />))
         }
       </ScrollView>
 
