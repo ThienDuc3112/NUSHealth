@@ -1,5 +1,3 @@
-import { relations } from "drizzle-orm";
-import { routineToPlanTable } from "./routineToPlanModel";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const planTable = sqliteTable("plans", {
@@ -7,7 +5,3 @@ export const planTable = sqliteTable("plans", {
   name: text("name").notNull(),
   description: text("description")
 });
-
-export const planRelation = relations(planTable, ({ many }) => ({
-  routine: many(routineToPlanTable),
-}));

@@ -2,7 +2,7 @@ import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'reac
 import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useFocusEffect } from 'expo-router'
-import RoutineCard from '@/components/routineCard'
+import RoutineCard from '@/components/card/routineCard'
 import { getRoutineByPlanId } from '@/helpers/getRoutineByPlan'
 import AddRoutineModal from '@/components/modal/addRoutineModal'
 import CreateRoutineModal from '@/components/modal/createRoutineModal'

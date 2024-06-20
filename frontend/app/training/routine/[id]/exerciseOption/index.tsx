@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
-import RoutineExerciseCard from '@/components/routineExerciseCard'
+import RoutineExerciseCard from '@/components/card/routineExerciseCard'
 
 const ExerciseList = () => {
   const [exerciseName, setExerciseName] = useState("")

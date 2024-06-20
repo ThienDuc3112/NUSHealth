@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect } from 'expo-router'
-import LocalWorkoutECard from '@/components/localWorkoutsECard'
+import LocalWorkoutECard from '@/components/card/localWorkoutsECard'
 
 const LocalWorkout = () => {
   const [exerciseName, setExerciseName] = useState("")

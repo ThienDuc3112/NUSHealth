@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
-import SetCard from '@/components/setCard'
+import SetCard from '@/components/card/setCard'
 
 const Workout = () => {
   const { id } = useLocalSearchParams()
@@ -41,17 +41,25 @@ const Workout = () => {
       <ScrollView style={{ flex: 1 }}>
         {
           Array(data?.exercises[ex].sets).fill(0, 0, data?.exercises[ex].sets).map((_, idx) =>
-            (<SetCard order={idx + 1} reps={data!.exercises[ex].reps} kg={data?.exercises[ex].kg ?? undefined} finished={false} />))
+          (<SetCard
+            touched={true}
+            active={true}
+            key={idx}
+            order={idx + 1}
+            reps={data!.exercises[ex].reps}
+            kg={data?.exercises[ex].kg ?? undefined}
+            finished={false}
+          />))
         }
       </ScrollView>
 
       <View style={{ position: "absolute", bottom: 0, left: 0, right: 0, flexDirection: "row", width: "100%" }}>
-        <Button title='Finish set' />
+        <Button title='Skip set' />
         <View style={styles.bottomData}>
           <Text>{data?.exercises[ex].reps} Reps</Text>
           <Text>{data?.exercises[ex].kg ?? "+"} Kg</Text>
         </View>
-        <Button title='Skip set' />
+        <Button title='Finish set' />
       </View>
     </View>
   )

@@ -1,5 +1,3 @@
-import { relations } from "drizzle-orm";
-import { exerciseToRoutineTable } from "./exerciseToRoutineModel";
 import {
   integer,
   primaryKey,
@@ -109,25 +107,5 @@ export const exercisePhotoTable = sqliteTable(
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.url] }),
-  })
-);
-
-export const exerciseRelation = relations(exerciseTable, ({ many, one }) => ({
-  secondaryMuscles: many(secondaryMuscleTable),
-  photos: many(exercisePhotoTable),
-  routine: many(exerciseToRoutineTable),
-}));
-
-export const exercisePhotoRelation = relations(
-  exercisePhotoTable,
-  ({ one }) => ({
-    exercise: one(exerciseTable),
-  })
-);
-
-export const secondaryMuscleRelation = relations(
-  exercisePhotoTable,
-  ({ one }) => ({
-    exercise: one(exerciseTable),
   })
 );
