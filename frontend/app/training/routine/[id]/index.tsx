@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, Text } from 'react-native'
+import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback } from 'react'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
@@ -27,6 +27,11 @@ const RoutineInfo = () => {
       <Link href={`/training/routine/${id}/exerciseOption`} asChild>
         <Button title='Add exercise to routine' />
       </Link>
+      <View style={{ marginTop: 8 }}>
+        <Link href={`/training/workout/${id}`} asChild>
+          <Button title='Workout' />
+        </Link>
+      </View>
     </ScrollView>
   )
 }
