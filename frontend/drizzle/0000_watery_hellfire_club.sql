@@ -35,6 +35,20 @@ CREATE TABLE `exercise_to_routine` (
 	FOREIGN KEY (`exercise_id`) REFERENCES `exercises`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE TABLE `history` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`time` integer
+);
+--> statement-breakpoint
+CREATE TABLE `history_set` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`reps` integer NOT NULL,
+	`history_key` integer NOT NULL,
+	`exercise_id` integer NOT NULL,
+	FOREIGN KEY (`history_key`) REFERENCES `history`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`exercise_id`) REFERENCES `exercises`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `plans` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`name` text NOT NULL,
@@ -54,3 +68,6 @@ CREATE TABLE `routine_to_plan` (
 	FOREIGN KEY (`routine_id`) REFERENCES `routines`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`plan_id`) REFERENCES `plans`(`id`) ON UPDATE no action ON DELETE cascade
 );
+--> statement-breakpoint
+CREATE INDEX `routine_index` ON `exercise_to_routine` (`routine_id`);--> statement-breakpoint
+CREATE INDEX `plan_index` ON `routine_to_plan` (`plan_id`);

@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "38859aa6-e27c-46dd-ab86-6bfbe7e72fd5",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "0bff5b57-7b03-48b8-ba1f-a62790283b5d",
+  "prevId": "38859aa6-e27c-46dd-ab86-6bfbe7e72fd5",
   "tables": {
     "exercise_photos": {
       "name": "exercise_photos",
@@ -309,7 +309,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "history_key_idx": {
+          "name": "history_key_idx",
+          "columns": [
+            "history_key"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "history_set_history_key_history_id_fk": {
           "name": "history_set_history_key_history_id_fk",

@@ -9,5 +9,5 @@ export const historySetTable = sqliteTable("history_set", {
   historyKey: integer("history_key").references(() => historyTable.id).notNull(),
   exerciseId: integer("exercise_id").references(() => exerciseTable.id).notNull()
 }, (table) => ({
-  keyIndex: index("history_key_idx").on(table.historyKey)
+  indexHistoryKey: index("history_key_idx").on(table.historyKey)
 }))

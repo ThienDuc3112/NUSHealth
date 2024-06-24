@@ -11,6 +11,8 @@ import migrations from "../drizzle/migrations";
 import { db } from "@/db/client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { getItem, setItem } from "expo-secure-store";
+import { loadDefaultExercises } from "@/helpers/loadDefaultExercises";
 const queryClient = new QueryClient()
 
 export {
@@ -37,6 +39,20 @@ export default function RootLayout() {
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  useEffect(() => {
+    const firstTime = getItem("FIRST_TIME")
+    console.log("Firstime: ", firstTime)
+    if (firstTime === undefined) {
+      console.log("Loading firstime")
+      try {
+        loadDefaultExercises()
+        setItem("FIRST_TIME", "FALSE")
+      } catch (error) {
+        console.error("Error loading the default exercises", error)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (loaded) {

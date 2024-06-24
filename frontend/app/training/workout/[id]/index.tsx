@@ -1,10 +1,13 @@
 import { Button, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
 import SetCard from '@/components/card/setCard'
 import { exerciseState, workoutState } from '@/types/workoutState'
+import { db } from '@/db/client'
+import { historyTable } from '@/schema/historyModel'
+import { historySetTable } from '@/schema/historySetModel'
 
 const { width: viewportWidth } = Dimensions.get("window")
 
@@ -30,8 +33,25 @@ const Workout = () => {
     setWorkoutState(prev => ({ ...prev, startTime: Date.now() }))
   }, []))
 
-  const submitWorkout = useCallback((state: workoutState) => {
-    console.log("submited")
+  const submitWorkout = useCallback(async (state: workoutState) => {
+    const history = (await db.insert(historyTable).values({
+      startTime: new Date(state.startTime),
+      endTime: new Date()
+    }).returning())[0]
+    const insertedValue: (typeof historySetTable.$inferInsert)[] = []
+    state.exercises.forEach(exercise => {
+      exercise.sets.forEach(set => {
+        if (set.finished) insertedValue.push({
+          kg: set.kg,
+          reps: set.reps,
+          historyKey: history.id,
+          exerciseId: exercise.exercise.id
+        })
+      })
+    })
+    const res = await db.insert(historySetTable).values(insertedValue).returning()
+    console.log("res", res)
+    router.navigate(`/training/workout/result/${history.id}`)
   }, [])
 
   const nextExercise = useCallback((finished: boolean) => {
@@ -115,7 +135,7 @@ const Workout = () => {
           <ScrollView style={{ flex: 1, width: viewportWidth }}>
             {
               exercise.sets.map((set, idx) => (
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity key={idx} onPress={() => {
                   setWorkoutState(prev => ({
                     ...prev, activeSet: idx, activeExercise: exercise.exIdx
                   }))
@@ -123,7 +143,6 @@ const Workout = () => {
                   <SetCard
                     touched={set.touched}
                     active={idx == workoutState.activeSet && exercise.exIdx == workoutState.activeExercise}
-                    key={idx}
                     order={idx + 1}
                     reps={set.reps}
                     kg={set.kg ?? undefined}
