@@ -1,6 +1,6 @@
-import { exerciseTable, musclesEnum } from "@/schema/exerciseModel";
+import { exerciseTable } from "@/schema/exerciseModel";
 
 export type exercise = typeof exerciseTable.$inferSelect & {
-  secondaryMuscles: (typeof musclesEnum)[number][];
+  secondaryMuscles: string[];
   photos: string[];
 };

@@ -1,0 +1,1 @@
+CREATE INDEX `history_key_idx` ON `history_set` (`history_key`);

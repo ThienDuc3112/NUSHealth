@@ -1,4 +1,4 @@
-import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
@@ -30,14 +30,18 @@ const ExerciseList = () => {
         <Button title='Add new exercise' />
       </Link>
 
-      <ScrollView>
-        {isLoading ?
+      {
+        isLoading ?
           <Text>Loading...</Text> :
           data ?
-            data.map(e => <RoutineExerciseCard key={e.id} e={e} id={id as any} />) :
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item: e }) => <RoutineExerciseCard id={id as string} e={e} />}
+            /> :
             <Text>{error?.message}</Text>
-        }
-      </ScrollView>
+
+      }
     </View>
   )
 }

@@ -75,9 +75,9 @@ export const exerciseTable = sqliteTable("exercises", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   initialId: text("initial_id"),
   name: text("name", { length: 255 }).notNull(),
-  bodyPart: text("body_part", { enum: bodyPartsEnum }).notNull(),
-  equipment: text("equipment", { enum: equipmentsEnum }).default("body weight"),
-  target: text("target", { enum: musclesEnum }).notNull(),
+  bodyPart: text("body_part").notNull(),
+  equipment: text("equipment").default("body weight"),
+  target: text("target").notNull(),
   instruction: text("instruction"),
   isDefaultExercise: integer("id_default_exercise", { mode: "boolean" })
     .notNull()
@@ -90,7 +90,7 @@ export const secondaryMuscleTable = sqliteTable(
     exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
       onDelete: "cascade",
     }),
-    muscle: text("muscle", { enum: musclesEnum }).notNull(),
+    muscle: text("muscle").notNull(),
   },
   (table) => ({
     pk: primaryKey({ columns: [table.exercisesId, table.muscle] }),
