@@ -5,7 +5,7 @@ import { postTable } from "../model/forum/postModel";
 import { count, eq } from "drizzle-orm";
 import { commentTable } from "../model/forum/commentModel";
 import { votingTable } from "../model/forum/upvoteDownvoteModel";
-import { postSchema } from "../types/post";
+import { PostRequest, postSchema } from "../types/post";
 
 const upvoteCountSQ = db
   .select({
@@ -65,7 +65,6 @@ export const getPostById = async (req: Request, res: Response) => {
       .leftJoin(upvoteCountSQ, eq(upvoteCountSQ.postId, postTable.id))
       .leftJoin(downvoteCountSQ, eq(downvoteCountSQ.postId, postTable.id)))[0]
     if (!post) return res.status(400).json({ message: "Post don't exist" })
-    if (post.post.isDeleted) return res.status(401).json({ message: "Post deleted" })
 
     const comments = await db.select().from(commentTable)
       .where(eq(commentTable.postId, id))
@@ -77,7 +76,7 @@ export const getPostById = async (req: Request, res: Response) => {
       comments: comments.map(c => {
         if (!c.isDeleted) return c;
         else return { ...c, content: "[DELETED]", userId: null }
-      })
+      }),
     })
   } catch (error) {
     console.error(error)
@@ -101,10 +100,33 @@ export const createPost = async (req: AuthRequest, res: Response) => {
   }
 }
 
-export const editPost = async (req: AuthRequest, res: Response) => {
+export const editPost = async (req: AuthRequest & PostRequest, res: Response) => {
+  if (!req.user) return res.status(401).json({ message: "You're not login" })
 
+  const body = await postSchema.safeParseAsync(req.body)
+  if (!body.success) return res.status(400).json({ message: "Incorrect body form", error: body.error });
+
+  if (req.user.id !== req.post.userId) return res.status(401).json({ message: "You're not authorized to edit this post" })
+
+  try {
+    await db.update(postTable).set({ ...body.data, editAt: new Date() }).where(eq(postTable.id, req.post.id))
+    return res.status(204).send();
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: "Something went wrong" })
+  }
 }
 
-export const deletePost = async (req: AuthRequest, res: Response) => {
+export const deletePost = async (req: AuthRequest & PostRequest, res: Response) => {
+  if (!req.user) return res.status(401).json({ message: "You're not login" })
 
+  if (req.user.id !== req.post.userId) return res.status(401).json({ message: "You're not authorized to edit this post" })
+
+  try {
+    await db.update(postTable).set({ isDeleted: true, body: "[DELETED]", title: "[DELETED]", userId: null, editAt: new Date() }).where(eq(postTable.id, req.post.id))
+    return res.status(204).send();
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: "Something went wrong" })
+  }
 }
