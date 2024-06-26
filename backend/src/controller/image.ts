@@ -8,7 +8,9 @@ export const getPublicGif = async (req: Request, res: Response) => {
   if (!id)
     return res.status(400).json({ message: "id not a 4 character string" });
 
-  const filePath = join(__dirname, "..", "..", "public", "gif", `${id}.gif`);
+  const filePath = process.env.NODE_ENV === "production" ?
+    join(__dirname, "..", "..", "..", "public", "gif", `${id}.gif`) :
+    join(__dirname, "..", "..", "public", "gif", `${id}.gif`);
 
   access(filePath, constants.F_OK, (err) => {
     if (err) {
