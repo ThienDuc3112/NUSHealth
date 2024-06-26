@@ -1,8 +1,4 @@
-import { relations } from "drizzle-orm";
 import { boolean, pgTable, serial, varchar } from "drizzle-orm/pg-core";
-import { exerciseTable } from "../workout/exerciseModel";
-import { routineTable } from "../workout/routineModel";
-import { planTable } from "../workout/planModel";
 
 export const userTable = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -13,9 +9,3 @@ export const userTable = pgTable("users", {
   activated: boolean("activated").default(false),
   bio: varchar("bio"),
 });
-
-export const userRelation = relations(userTable, ({ many }) => ({
-  exercise: many(exerciseTable),
-  routine: many(routineTable),
-  plan: many(planTable),
-}));
