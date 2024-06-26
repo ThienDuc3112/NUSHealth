@@ -7,7 +7,7 @@ import { AuthRequest } from "../types/auth";
 
 export const authUser = async (
   req: AuthRequest,
-  res: Response,
+  _: Response,
   next: NextFunction
 ) => {
   const token = req.headers.authorization?.split(" ")[1];
