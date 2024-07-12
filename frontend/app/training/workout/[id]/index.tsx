@@ -1,4 +1,4 @@
-import { Button, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Button, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
@@ -107,23 +107,6 @@ const Workout = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text>Workout</Text>
-
-      <View>
-        <Text>
-          {activeExercise.exercise.name}
-        </Text>
-
-        {
-          activeExercise.exercise.name &&
-          <Text>
-            {
-              activeExercise.exercise.instruction
-            }
-          </Text>
-        }
-      </View>
-
       <FlatList
         horizontal
         pagingEnabled
@@ -133,6 +116,15 @@ const Workout = () => {
         keyExtractor={(_, idx) => idx.toString()}
         renderItem={({ item: exercise }) => (
           <ScrollView style={{ flex: 1, width: viewportWidth }}>
+            <Image
+              source={{ uri: exercise.exercise.photos[0] }}
+              style={{
+                width: viewportWidth - 100,
+                height: viewportWidth - 100,
+                margin: "auto",
+                marginTop: 10
+              }}
+            />
             {
               exercise.sets.map((set, idx) => (
                 <TouchableOpacity key={idx} onPress={() => {

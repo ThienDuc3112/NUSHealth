@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
-import ExerciseCardBase from '@/components/card/exerciseCardBase'
+import LocalWorkoutECard from '@/components/card/localWorkoutsECard'
 
 const RoutineInfo = () => {
   const { id } = useLocalSearchParams()
@@ -19,20 +19,12 @@ const RoutineInfo = () => {
     <ScrollView>
       <Text>RoutineInfo</Text>
       <Text>Routine id: {id}</Text>
-      {
-        // <Text>Data: {
-        //   isLoading ?
-        //     "Loading..." : error ?
-        //       `${error.name} ${error.message}\nCause: ${error.cause}` : JSON.stringify(data, null, 2)
-        // }
-        // </Text>
-      }
       <FlatList
         data={data?.exercises || []}
         renderItem={({ item }) => (
-          <ExerciseCardBase e={{
+          <LocalWorkoutECard e={{
             ...item,
-          }}/>
+          }} />
         )
         }
       />
