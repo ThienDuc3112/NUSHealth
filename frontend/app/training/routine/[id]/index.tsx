@@ -1,8 +1,9 @@
-import { Button, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useCallback } from 'react'
 import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
+import ExerciseCardBase from '@/components/card/exerciseCardBase'
 
 const RoutineInfo = () => {
   const { id } = useLocalSearchParams()
@@ -18,13 +19,24 @@ const RoutineInfo = () => {
     <ScrollView>
       <Text>RoutineInfo</Text>
       <Text>Routine id: {id}</Text>
-      <Text>Data: {
-        isLoading ?
-          "Loading..." : error ?
-            `${error.name} ${error.message}\nCause: ${error.cause}` : JSON.stringify(data, null, 2)
+      {
+        // <Text>Data: {
+        //   isLoading ?
+        //     "Loading..." : error ?
+        //       `${error.name} ${error.message}\nCause: ${error.cause}` : JSON.stringify(data, null, 2)
+        // }
+        // </Text>
       }
-      </Text>
-      <Link href={`/training/routine/${id}/exerciseOption`} asChild>
+      <FlatList
+        data={data?.exercises || []}
+        renderItem={({ item }) => (
+          <ExerciseCardBase e={{
+            ...item,
+          }}/>
+        )
+        }
+      />
+      <Link href={`/training/routine/${id}/exercise`} asChild>
         <Button title='Add exercise to routine' />
       </Link>
       <View style={{ marginTop: 8 }}>

@@ -6,7 +6,7 @@ import ExerciseCardBase from './exerciseCardBase'
 
 const RoutineExerciseCard = ({ e, id }: { e: exercise, id: string }) => {
   return (
-    <Link href={`/training/routine/${id}/exerciseOption/${e.id}`} asChild>
+    <Link href={`/training/routine/${id}/exercise/${e.id}`} asChild>
       <TouchableWithoutFeedback>
         <View>
           <ExerciseCardBase e={e} />
