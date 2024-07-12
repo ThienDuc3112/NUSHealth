@@ -1,5 +1,5 @@
 import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { getLocalExercises } from '@/helpers/getExercises'
 import { Link, useFocusEffect } from 'expo-router'
@@ -11,8 +11,26 @@ const LocalWorkout = () => {
     queryKey: ["exercises"],
     queryFn: getLocalExercises
   })
+  const [actualData, setActualData] = useState<typeof data>()
 
   useFocusEffect(useCallback(() => { refetch() }, []))
+  useEffect(() => { setActualData(data) }, [data, isLoading, error])
+
+  const ref = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    console.log(exerciseName)
+    clearTimeout(ref.current)
+    ref.current = setTimeout(() => {
+      console.log("Checking");
+      if (!data) return;
+      if (exerciseName == '')
+        setActualData(data);
+      else {
+        setActualData(data.filter(e => e.name.toLowerCase().includes(exerciseName.toLowerCase().trim())))
+      }
+    }, 200)
+  }, [exerciseName])
 
   return (
     <View style={{ flex: 1 }}>
@@ -29,9 +47,9 @@ const LocalWorkout = () => {
       {
         isLoading ?
           <Text>Loading...</Text> :
-          data ?
+          actualData ?
             <FlatList
-              data={data}
+              data={actualData}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item: e }) => <LocalWorkoutECard e={e} />}
             /> :
