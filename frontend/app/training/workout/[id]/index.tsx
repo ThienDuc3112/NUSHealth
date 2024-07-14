@@ -1,5 +1,5 @@
 import { Button, Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { LegacyRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
 import { getRoutineById } from '@/helpers/getRoutineById'
@@ -21,6 +21,7 @@ const Workout = () => {
     activeSet: 0,
     exercises: []
   })
+  const listRef = useRef<FlatList<exerciseState>>()
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["routine", id],
@@ -51,7 +52,7 @@ const Workout = () => {
     })
     const res = await db.insert(historySetTable).values(insertedValue).returning()
     console.log("res", res)
-    router.navigate(`/training/workout/result/${history.id}`)
+    router.replace(`/training/workout/result/${history.id}`)
   }, [])
 
   const nextExercise = useCallback((finished: boolean) => {
@@ -70,6 +71,11 @@ const Workout = () => {
         }
       } while (prev.exercises[prev.activeExercise]?.sets[prev.activeSet]?.finished);
 
+      console.log(prev.activeExercise < prev.exercises.length)
+      if (prev.activeExercise < prev.exercises.length) {
+        console.log(prev)
+        listRef.current?.scrollToIndex({ index: prev.activeExercise, animated: true })
+      }
       return { ...prev }
     })
   }, [workoutState])
@@ -110,6 +116,7 @@ const Workout = () => {
       <FlatList
         horizontal
         pagingEnabled
+        ref={listRef as LegacyRef<FlatList<exerciseState>>}
         showsHorizontalScrollIndicator={false}
         snapToAlignment='center'
         data={workoutState.exercises}

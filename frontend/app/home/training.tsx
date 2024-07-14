@@ -4,6 +4,7 @@ import HomeRoutineList from "@/components/homeRoutineList";
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 
 const Page = () => {
+
   return (
     <View>
       <View style={styles.dashboard}>
