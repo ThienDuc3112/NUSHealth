@@ -6,7 +6,7 @@ import { routineToPlanTable } from "@/schema/routineToPlanModel";
 import { routine } from "@/types/routine";
 import { eq, getTableColumns } from "drizzle-orm";
 
-export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: routine["routine"], targets: (typeof musclesEnum[number])[], exercisesCount: number })[]> => {
+export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: routine["routine"], targets: string[], exercisesCount: number })[]> => {
   console.log(`===== Helper getRoutineByPlanId called =====`)
   if (!planId && planId != 0) {
     const routines = await db
@@ -17,7 +17,7 @@ export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: r
       .from(routineTable)
       .leftJoin(exerciseToRoutineTable, eq(routineTable.id, exerciseToRoutineTable.routineId))
       .leftJoin(exerciseTable, eq(exerciseToRoutineTable.exerciseId, exerciseTable.id))
-    const temp: Record<number, { routine: routine["routine"], targets: (typeof musclesEnum[number])[], exercisesCount: number }> = {}
+    const temp: Record<number, { routine: routine["routine"], targets: string[], exercisesCount: number }> = {}
     routines.forEach(r => {
       if (!temp[r.routine.id]) temp[r.routine.id] = {
         routine: r.routine,
@@ -41,7 +41,7 @@ export const getRoutineByPlanId = async (planId?: number): Promise<({ routine: r
       .where(eq(routineToPlanTable.planId, planId))
       .leftJoin(exerciseToRoutineTable, eq(routineTable.id, exerciseToRoutineTable.routineId))
       .leftJoin(exerciseTable, eq(exerciseToRoutineTable.exerciseId, exerciseTable.id))
-    const temp: Record<number, { routine: routine["routine"], targets: (typeof musclesEnum[number])[], exercisesCount: number }> = {}
+    const temp: Record<number, { routine: routine["routine"], targets: string[], exercisesCount: number }> = {}
     routines.forEach(r => {
       if (!temp[r.routine.id]) temp[r.routine.id] = {
         routine: r.routine,

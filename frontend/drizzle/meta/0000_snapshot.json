@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "38859aa6-e27c-46dd-ab86-6bfbe7e72fd5",
+  "id": "40c26475-be9c-41ea-a645-f3d0a9152309",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "exercise_photos": {
@@ -73,13 +73,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "body_part": {
-          "name": "body_part",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "equipment": {
           "name": "equipment",
           "type": "text",
@@ -116,8 +109,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "secondary_muscles": {
-      "name": "secondary_muscles",
+    "targeted_muscles": {
+      "name": "targeted_muscles",
       "columns": {
         "exercise_id": {
           "name": "exercise_id",
@@ -136,9 +129,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "secondary_muscles_exercise_id_exercises_id_fk": {
-          "name": "secondary_muscles_exercise_id_exercises_id_fk",
-          "tableFrom": "secondary_muscles",
+        "targeted_muscles_exercise_id_exercises_id_fk": {
+          "name": "targeted_muscles_exercise_id_exercises_id_fk",
+          "tableFrom": "targeted_muscles",
           "tableTo": "exercises",
           "columnsFrom": [
             "exercise_id"
@@ -151,12 +144,12 @@
         }
       },
       "compositePrimaryKeys": {
-        "secondary_muscles_exercise_id_muscle_pk": {
+        "targeted_muscles_exercise_id_muscle_pk": {
           "columns": [
             "exercise_id",
             "muscle"
           ],
-          "name": "secondary_muscles_exercise_id_muscle_pk"
+          "name": "targeted_muscles_exercise_id_muscle_pk"
         }
       },
       "uniqueConstraints": {}
@@ -309,7 +302,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "history_key_idx": {
+          "name": "history_key_idx",
+          "columns": [
+            "history_key"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "history_set_history_key_history_id_fk": {
           "name": "history_set_history_key_history_id_fk",

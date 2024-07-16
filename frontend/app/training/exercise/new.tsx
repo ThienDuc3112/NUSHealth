@@ -9,23 +9,23 @@ import React, { useEffect } from "react";
 import { useNavigation } from "expo-router";
 import { db } from "@/db/client";
 import {
-  bodyPartsEnum,
+    bodyPartsEnum,
   equipmentsEnum,
   exerciseTable,
   musclesEnum,
-  secondaryMuscleTable,
+  targetedMuscleTable,
 } from "@/schema/exerciseModel";
 import { FieldArray, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import TextInputWithSuggestion from "@/components/textInputWithSuggestion";
+import Body from "react-native-body-highlighter"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().max(255),
-  bodyPart: Yup.string().oneOf(bodyPartsEnum).required(),
-  target: Yup.string().oneOf(musclesEnum).required(),
+  target: Yup.string().required(),
   equipment: Yup.string().oneOf(equipmentsEnum).required(),
   instruction: Yup.string(),
-  secondaryMuscles: Yup.array().of(Yup.string().oneOf(musclesEnum)),
+  targetedMuscles: Yup.array().of(Yup.string().oneOf(musclesEnum)),
   generic: Yup.string()
 });
 
@@ -44,19 +44,19 @@ const CreateNewExercise = () => {
         .transaction(async (tx) => {
           const [res] = await tx
             .insert(exerciseTable)
-            .values({ ...data, secondaryMuscles: undefined } as any)
+            .values({ ...data, targetedMuscles: undefined } as any)
             .returning();
           console.log("insert exercse:");
           console.log(JSON.stringify(res, null, 2));
-          const secondaryMuscles: any[] =
+          const targetedMuscles: any[] =
             data.secondaryMuscles
               .filter((value: any, index: number, self: any[]) =>
                 value != "" && index === self.indexOf(value))
-          if (secondaryMuscles.length > 0) {
+          if (targetedMuscles.length > 0) {
             const secondMusRes = await tx
-              .insert(secondaryMuscleTable)
+              .insert(targetedMuscleTable)
               .values(
-                secondaryMuscles.map((muscle) => ({ exercisesId: res.id, muscle: muscle }))
+                targetedMuscles.map((muscle) => ({ exercisesId: res.id, muscle: muscle }))
               )
               .returning();
             console.log("insert second muscle:");
@@ -76,7 +76,6 @@ const CreateNewExercise = () => {
         validationSchema={validationSchema}
         initialValues={{
           name: "",
-          bodyPart: "",
           target: "",
           equipment: "",
           instruction: "",
@@ -107,30 +106,17 @@ const CreateNewExercise = () => {
               style={styles.errorText}
             >{errors.name}</Text>}
 
-            <Text>Target muscle: </Text>
+            <Text>Target part: </Text>
             <TextInputWithSuggestion
               value={values.target}
               onChangeText={handleChange("target")}
-              suggestions={[...musclesEnum]}
+              suggestions={[...bodyPartsEnum]}
               onBlur={handleBlur("target")}
             />
             {touched.target && errors.target && <Text
               style={styles.errorText}
             >{errors.target}</Text>}
 
-
-            <Text>General group of muscle targeted: </Text>
-            <TextInputWithSuggestion
-              value={values.bodyPart}
-              onChangeText={handleChange("bodyPart")}
-              suggestions={[...bodyPartsEnum]}
-              onBlur={handleBlur("bodyPart")}
-            />
-            {touched.bodyPart && errors.bodyPart && (
-              <Text
-                style={styles.errorText}
-              >{errors.bodyPart}</Text>
-            )}
 
             <Text>Equipment: </Text>
             <TextInputWithSuggestion
@@ -187,6 +173,17 @@ const CreateNewExercise = () => {
             </FieldArray>
 
             {errors.generic && <Text>{errors.generic}</Text>}
+
+            <Body 
+              gender="male"
+              side="front"
+              data={[
+                {slug: "adductors", intensity: 1, color: "blue"}
+              ]}
+              onBodyPartPress={b => console.log(b)}
+              frontOnly
+              backOnly={false}
+            />
 
             <Button onPress={() => handleSubmit()} title="Submit" />
           </>

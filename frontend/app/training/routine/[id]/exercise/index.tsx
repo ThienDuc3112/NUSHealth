@@ -58,7 +58,6 @@ const ExerciseList = () => {
               renderItem={({ item: e }) => <RoutineExerciseCard id={id as string} e={e} />}
             /> :
             <Text>{error?.message}</Text>
-
       }
     </View>
   )

@@ -1,5 +1,5 @@
 import { db } from "@/db/client"
-import { exercisePhotoTable, exerciseTable, secondaryMuscleTable } from "@/schema/exerciseModel"
+import { exercisePhotoTable, exerciseTable, targetedMuscleTable } from "@/schema/exerciseModel"
 import { exerciseToRoutineTable } from "@/schema/exerciseToRoutineModel"
 import { routineTable } from "@/schema/routineModel"
 import { exercise } from "@/types/exercises"
@@ -22,21 +22,21 @@ export const getRoutineById = async (routineId: number): Promise<routine> => {
       eq(exerciseTable.id, exercisePhotoTable.exercisesId)
     )
     .leftJoin(
-      secondaryMuscleTable,
-      eq(exerciseTable.id, secondaryMuscleTable.exercisesId)
+      targetedMuscleTable,
+      eq(exerciseTable.id, targetedMuscleTable.exercisesId)
     )
     .orderBy(exerciseToRoutineTable.order);
   const exerciseDir: Record<number, exercise & typeof exerciseToRoutineTable.$inferSelect> = {};
   routinesExercises.forEach((exercise) => {
-    const { exercises: ex, exercise_photos, secondary_muscles, exercise_to_routine: e2r } = exercise;
+    const { exercises: ex, exercise_photos, targeted_muscles, exercise_to_routine: e2r } = exercise;
     if (!exerciseDir[e2r.id]) {
       exerciseDir[e2r.id] = { ...ex, secondaryMuscles: [], photos: [], ...e2r };
     }
     if (exercise_photos) {
       exerciseDir[e2r.id].photos.push(exercise_photos.url);
     }
-    if (secondary_muscles) {
-      exerciseDir[e2r.id].secondaryMuscles.push(secondary_muscles.muscle);
+    if (targeted_muscles) {
+      exerciseDir[e2r.id].secondaryMuscles.push(targeted_muscles.muscle);
     }
   });
   return {

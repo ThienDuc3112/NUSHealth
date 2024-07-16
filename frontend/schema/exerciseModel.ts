@@ -75,7 +75,6 @@ export const exerciseTable = sqliteTable("exercises", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   initialId: text("initial_id"),
   name: text("name", { length: 255 }).notNull(),
-  bodyPart: text("body_part").notNull(),
   equipment: text("equipment").default("body weight"),
   target: text("target").notNull(),
   instruction: text("instruction"),
@@ -84,8 +83,8 @@ export const exerciseTable = sqliteTable("exercises", {
     .default(false),
 });
 
-export const secondaryMuscleTable = sqliteTable(
-  "secondary_muscles",
+export const targetedMuscleTable = sqliteTable(
+  "targeted_muscles",
   {
     exercisesId: integer("exercise_id").references(() => exerciseTable.id, {
       onDelete: "cascade",

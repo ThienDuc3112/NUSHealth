@@ -1,6 +1,6 @@
 import exercises from "@/assets/exercisesFull.json"
 import { db } from "@/db/client"
-import { exercisePhotoTable, exerciseTable, secondaryMuscleTable } from "@/schema/exerciseModel"
+import { exercisePhotoTable, exerciseTable, targetedMuscleTable } from "@/schema/exerciseModel"
 
 export const loadDefaultExercises = async () => {
   const insertedExercises = await db
@@ -10,7 +10,6 @@ export const loadDefaultExercises = async () => {
         name: e.name,
         equipment: e.equipment,
         initialId: e.id,
-        bodyPart: e.bodyPart,
         target: e.target,
         instruction: e.instructions.join("\n"),
         isDefaultExercise: true
@@ -18,7 +17,7 @@ export const loadDefaultExercises = async () => {
     })).returning({ id: exerciseTable.id, initialId: exerciseTable.initialId })
   const setInsertedEx = new Map<string | null, number>()
   insertedExercises.forEach(ie => setInsertedEx.set(ie.initialId, ie.id))
-  const secondaryMuscles: Array<typeof secondaryMuscleTable.$inferInsert> = []
+  const secondaryMuscles: Array<typeof targetedMuscleTable.$inferInsert> = []
   exercises.forEach(e => {
     e.secondaryMuscles.forEach(muscle => {
       secondaryMuscles.push({
@@ -26,7 +25,7 @@ export const loadDefaultExercises = async () => {
       })
     })
   })
-  await db.insert(secondaryMuscleTable).values(secondaryMuscles)
+  await db.insert(targetedMuscleTable).values(secondaryMuscles)
   await db.insert(exercisePhotoTable).values(insertedExercises.map(ie => {
     return {
       exercisesId: ie.id,

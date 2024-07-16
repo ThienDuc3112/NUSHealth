@@ -9,14 +9,13 @@ CREATE TABLE `exercises` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`initial_id` text,
 	`name` text(255) NOT NULL,
-	`body_part` text NOT NULL,
 	`equipment` text DEFAULT 'body weight',
 	`target` text NOT NULL,
 	`instruction` text,
 	`id_default_exercise` integer DEFAULT false NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `secondary_muscles` (
+CREATE TABLE `targeted_muscles` (
 	`exercise_id` integer,
 	`muscle` text NOT NULL,
 	PRIMARY KEY(`exercise_id`, `muscle`),
@@ -41,7 +40,7 @@ CREATE TABLE `history` (
 );
 --> statement-breakpoint
 CREATE TABLE `history_set` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`id` integer,
 	`reps` integer NOT NULL,
 	`history_key` integer NOT NULL,
 	`exercise_id` integer NOT NULL,
@@ -70,4 +69,5 @@ CREATE TABLE `routine_to_plan` (
 );
 --> statement-breakpoint
 CREATE INDEX `routine_index` ON `exercise_to_routine` (`routine_id`);--> statement-breakpoint
+CREATE INDEX `history_key_idx` ON `history_set` (`history_key`);--> statement-breakpoint
 CREATE INDEX `plan_index` ON `routine_to_plan` (`plan_id`);
