@@ -1,36 +1,37 @@
 import {
   Button,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "expo-router";
 import { db } from "@/db/client";
 import {
-    bodyPartsEnum,
+  bodyPartsEnum,
   equipmentsEnum,
   exerciseTable,
-  musclesEnum,
   targetedMuscleTable,
 } from "@/schema/exerciseModel";
-import { FieldArray, Formik, FormikHelpers } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import TextInputWithSuggestion from "@/components/textInputWithSuggestion";
-import Body from "react-native-body-highlighter"
+import Body, { BodyPart } from "react-native-body-highlighter"
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().max(255),
   target: Yup.string().required(),
-  equipment: Yup.string().oneOf(equipmentsEnum).required(),
+  equipment: Yup.string().required(),
   instruction: Yup.string(),
-  targetedMuscles: Yup.array().of(Yup.string().oneOf(musclesEnum)),
   generic: Yup.string()
 });
 
 const CreateNewExercise = () => {
   const navigation = useNavigation();
+
+  const [highlight, setHightlight] = useState<BodyPart[]>([])
 
   useEffect(() => {
     navigation.setOptions({
@@ -48,21 +49,21 @@ const CreateNewExercise = () => {
             .returning();
           console.log("insert exercse:");
           console.log(JSON.stringify(res, null, 2));
-          const targetedMuscles: any[] =
-            data.secondaryMuscles
-              .filter((value: any, index: number, self: any[]) =>
-                value != "" && index === self.indexOf(value))
+          const targetedMuscles: any[] = highlight
+            .map(e => e.slug)
+            .filter((val, idx, self) => (self).indexOf(val) !== idx);
           if (targetedMuscles.length > 0) {
-            const secondMusRes = await tx
+            const insertedTargetMuscles = await tx
               .insert(targetedMuscleTable)
               .values(
                 targetedMuscles.map((muscle) => ({ exercisesId: res.id, muscle: muscle }))
               )
               .returning();
             console.log("insert second muscle:");
-            console.log(JSON.stringify(secondMusRes, null, 2));
+            console.log(JSON.stringify(insertedTargetMuscles, null, 2));
           }
           resetForm()
+          setHightlight([])
         })
     } catch (error) {
       console.error(error)
@@ -71,7 +72,7 @@ const CreateNewExercise = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Formik
         validationSchema={validationSchema}
         initialValues={{
@@ -91,10 +92,8 @@ const CreateNewExercise = () => {
           handleSubmit,
           touched,
           handleBlur,
-          setFieldValue,
         }) => (
           <>
-
             <Text>Name: </Text>
             <TextInput
               style={styles.input}
@@ -137,6 +136,7 @@ const CreateNewExercise = () => {
               onBlur={handleBlur("instruction")}
               onChangeText={handleChange("instruction")}
               value={values.instruction}
+              multiline
             />
             {touched.instruction && errors.instruction && (
               <Text
@@ -144,52 +144,54 @@ const CreateNewExercise = () => {
               >{errors.instruction}</Text>
             )}
 
-            <FieldArray name="secondaryMuscles">
-              {({ push, remove }) => (
-                <View>
-                  <Text>Secondary target muscles</Text>
-                  {values.secondaryMuscles.map((muscle, index) => (
-                    <View key={index}>
+            <Text>Specific muscles targeted (optional): </Text>
+            <Text>Selected: {highlight.map(v => v.slug).join(", ") || "None"} </Text>
 
-                      <TextInputWithSuggestion
-                        onBlur={handleBlur(`secondaryMuscles[${index}]`)}
-                        onChangeText={(text) => {
-                          setFieldValue(`secondaryMuscles[${index}]`, text)
-                        }}
-                        value={muscle}
-                        suggestions={[...musclesEnum]}
-                      />
+            <View style={{ flexDirection: "row" }}>
+              <Body
+                gender="male"
+                side="front"
+                data={highlight}
+                onBodyPartPress={b => {
+                  setHightlight(prev => {
+                    const idx = prev.findIndex(val => val.slug === b.slug);
+                    if (idx != -1) {
+                      return [...prev.slice(0, idx), ...prev.slice(idx + 1)]
+                    } else {
+                      return [...prev, { ...b, intensity: 1 }]
+                    }
+                  })
+                }}
+                frontOnly
+                backOnly={false}
+              />
 
-                      <Button
-                        onPress={() => remove(index)}
-                        title="Delete"
-                        color={"#bb2222"}
-                      />
-                    </View>
-                  ))}
-                  <Button onPress={() => push("")} title="Add target muscle" />
-                </View>
-              )}
-            </FieldArray>
+              <Body
+                gender="male"
+                side="back"
+                data={highlight}
+                onBodyPartPress={b => {
+                  setHightlight(prev => {
+                    const idx = prev.findIndex(val => val.slug === b.slug);
+                    if (idx != -1) {
+                      return [...prev.slice(0, idx), ...prev.slice(idx + 1)]
+                    } else {
+                      return [...prev, { ...b, intensity: 1 }]
+                    }
+                  })
+                }}
+                frontOnly={false}
+                backOnly
+              />
+            </View>
 
             {errors.generic && <Text>{errors.generic}</Text>}
-
-            <Body 
-              gender="male"
-              side="front"
-              data={[
-                {slug: "adductors", intensity: 1, color: "blue"}
-              ]}
-              onBodyPartPress={b => console.log(b)}
-              frontOnly
-              backOnly={false}
-            />
 
             <Button onPress={() => handleSubmit()} title="Submit" />
           </>
         )}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -198,7 +200,7 @@ export default CreateNewExercise;
 const styles = StyleSheet.create({
   container: {},
   input: {
-    height: 40,
+    minHeight: 40,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 12,

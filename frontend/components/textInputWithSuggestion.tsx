@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 
 const TextInputWithSuggestion = ({
   onBlur,
@@ -27,20 +27,20 @@ const TextInputWithSuggestion = ({
         value={value}
         onFocus={() => { if (!value) setFocus(true) }}
       />
-      {focus && value === '' && <View style={styles.suggestionsContainer}>
-        <FlatList
-          style={{ flex: 1 }}
-          keyboardShouldPersistTaps="handled"
-          data={suggestions}
-          keyExtractor={(item) => item}
-          renderItem={({ item }) => (
+      {focus && value === '' && <ScrollView
+        nestedScrollEnabled
+        style={styles.suggestionsContainer}
+      >
+        {
+          suggestions.map((val, idx) => (
             <TouchableOpacity
-              onPress={() => onChangeText(item)}>
-              <Text style={styles.suggestionItem}>{item}</Text>
+              key={idx}
+              onPress={() => onChangeText(val)}>
+              <Text style={styles.suggestionItem}>{val}</Text>
             </TouchableOpacity>
-          )}
-        />
-      </View>}
+          ))
+        }
+      </ScrollView>}
     </View>
   )
 }
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'white',
     maxHeight: 200,
+    height: 200,
     borderColor: 'gray',
     borderWidth: 1,
     borderTopWidth: 0,
